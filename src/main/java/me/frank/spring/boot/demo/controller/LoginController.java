@@ -34,9 +34,9 @@ public class LoginController {
 
     @ApiOperation(value = "登录", notes = "登陆并获取token")
     @PostMapping(LOGIN_URL)
-    public AppResponse<Boolean> login() {
+    public AppResponse<String> login(HttpServletResponse response) {
         // 能到controller层，说明所有校验都通过了
-        return AppResponse.success(true);
+        return AppResponse.success(response.getHeader(HEADER_NAME));
     }
 
     @ApiOperation(

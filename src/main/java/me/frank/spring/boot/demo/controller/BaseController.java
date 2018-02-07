@@ -3,13 +3,13 @@ package me.frank.spring.boot.demo.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.frank.spring.boot.demo.dto.AppResponse;
-import me.frank.spring.boot.demo.entity.AppUser;
 import me.frank.spring.boot.demo.exception.ServiceException;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import springfox.documentation.annotations.ApiIgnore;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static me.frank.spring.boot.demo.properties.SecurityConst.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -38,8 +38,8 @@ public class BaseController {
                     "返回数据：Hello World!",
             response = String.class)
     @RequestMapping(value = API_PREFIX + "/test", method = {GET, POST})
-    public AppResponse<String> authTest(@RequestAttribute @ApiIgnore AppUser user) {
-        return AppResponse.success("Hello " + user.getUsername() + "!");
+    public AppResponse<String> authTest(Authentication authentication) {
+        return AppResponse.success("Hello " + authentication.getName() + "!");
     }
 
     @ApiOperation(
@@ -47,7 +47,8 @@ public class BaseController {
             value = "异常接口",
             notes = "不做调用，校验Token异常将转向此接口")
     @PostMapping(value = AUTH_FAILED_URL)
-    public AppResponse error(@RequestAttribute ServiceException error) {
-        return AppResponse.failed(error.getMessage());
+    public AppResponse error(HttpServletRequest request) {
+        final ServiceException ERROR = (ServiceException) request.getAttribute(ATTR_ERROR);
+        return AppResponse.failed(ERROR.getMessage());
     }
 }

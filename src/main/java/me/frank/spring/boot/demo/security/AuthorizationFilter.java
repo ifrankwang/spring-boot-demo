@@ -80,14 +80,15 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
 
         final String USER_NAME = jwtService.getSubjectFrom(TOKEN);
 
-        if (!StringUtils.isEmpty(USER_NAME)) {
+        if (StringUtils.isNotEmpty(USER_NAME)) {
             // 获取用户信息
-            LOG.info("Token'{}'有效！属于用户：{}", TOKEN, USER_NAME);
+            LOG.info("\nToken'{}'有效！属于用户：{}", TOKEN, USER_NAME);
 
             final AppUser USER = (AppUser) userDetailsService.loadUserByUsername(USER_NAME);
-
-            request.setAttribute(ATTR_USER, USER);
-            return new UsernamePasswordAuthenticationToken(USER_NAME, USER.getPassword(), USER.getAuthorities());
+            final UsernamePasswordAuthenticationToken AUTH =
+                    new UsernamePasswordAuthenticationToken(USER_NAME, USER.getPassword(), USER.getAuthorities());
+            AUTH.setDetails(USER);
+            return AUTH;
         } else {
             LOG.warn("\n{}不是有效的Token！", TOKEN);
             throw INVALID_TOKEN;

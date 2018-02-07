@@ -38,7 +38,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
         // security的相关配置
         http.cors().and().csrf().disable()
             // 身份校验过滤器
-            .addFilter(new AuthenticationFilter(authenticationManager(), userDetailsService, jwtService))
+            .addFilter(new AuthenticationFilter(authenticationManager(), jwtService))
             // 权限校验过滤器
             .addFilter(new AuthorizationFilter(authenticationManager(), userDetailsService, jwtService))
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -11,7 +11,6 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
@@ -22,20 +21,17 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static me.frank.spring.boot.demo.exception.ServiceException.*;
-import static me.frank.spring.boot.demo.properties.SecurityConst.*;
+import static me.frank.spring.boot.demo.properties.SecurityConst.HEADER_NAME;
 
 // 登录时会调用的过滤器
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final Logger LOG = LoggerFactory.getLogger(getClass());
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
     private final IJwtService jwtService;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager,
-                                UserDetailsService userDetailsService,
                                 IJwtService jwtService) {
         this.authenticationManager = authenticationManager;
-        this.userDetailsService = userDetailsService;
         this.jwtService = jwtService;
     }
 
@@ -77,17 +73,15 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                             FilterChain chain,
                                             Authentication authResult)
             throws IOException, ServletException {
-        LOG.info("\n登陆校验成功！校验信息：{}", authResult);
-
         final String USERNAME = ((AppUser) authResult.getPrincipal()).getUsername();
-        final AppUser USER = (AppUser) userDetailsService.loadUserByUsername(USERNAME);
+
+        LOG.info("\n用户{}登陆校验成功！", USERNAME);
 
         // 生成token
         final String TOKEN = jwtService.genTokenFor(USERNAME);
 
-        // 请求体、回应体中加入相应参数
-        request.setAttribute(ATTR_USER, USER);
-        response.addHeader(HEADER_NAME, TOKEN_PREFIX + TOKEN);
+        // 回应体中加入相应参数
+        response.addHeader(HEADER_NAME, TOKEN);
 
         chain.doFilter(request, response);
     }
