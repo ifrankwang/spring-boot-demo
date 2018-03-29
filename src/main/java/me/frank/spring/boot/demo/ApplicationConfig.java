@@ -15,8 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import static me.frank.spring.boot.demo.properties.SecurityConst.HEADER_NAME;
 
-// 另外需要引入的properties文件
-//@PropertySources({@PropertySource("classpath:others.properties")})
 // 切面方法自动代理
 @EnableAspectJAutoProxy
 // 需要扫描的数据库模型类所在的包
@@ -48,7 +46,9 @@ public class ApplicationConfig {
                 registry.addMapping("/**")
                         .allowCredentials(true)
                         .allowedOrigins("*")
-                        .allowedHeaders(HEADER_NAME);
+                        .allowedMethods("GET", "POST", "OPTIONS")
+                        .allowedHeaders(HEADER_NAME, "Content-Type", "X-Requested-With", "accept",
+                                        "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers");
             }
         };
     }
