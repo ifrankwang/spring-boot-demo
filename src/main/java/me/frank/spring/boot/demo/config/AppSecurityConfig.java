@@ -45,9 +45,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             // 在此加入不走权限的API地址
-            .antMatchers(NO_AUTH_URL + "/**", LOGIN_URL, AUTH_FAILED_URL,
-                         "/resources/**", "/static/**", "/public/**",
-                         "/swagger-ui/**", "/swagger-resources/**")
+            .antMatchers(NO_AUTH_URL + "/**", LOGIN_URL, AUTH_FAILED_URL)
             .permitAll()
             .anyRequest().authenticated()
             .and()
@@ -59,12 +57,13 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // 静态网页资源不做安全校验
         web.ignoring()
-           .antMatchers("/resources/**", "/static/**", "/public/**",
-                        "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**",
-                        "/*.html", "/**/*.html", "/**/*.css",
-                        "/**/*.js", "/**/*.png", "/**/*.jpg",
-                        "/**/*.gif", "/**/*.svg", "/**/*.ico",
-                        "/**/*.ttf", "/**/*.woff", "/**/*.otf");
+           .antMatchers("/resources/**", "/static/**",
+                        "/public/**", "/swagger-ui/**", "/swagger-resources/**",
+                        "/v2/api-docs/**", "/*.html", "/**/*.html",
+                        "/**/*.css", "/**/*.js", "/**/*.png",
+                        "/**/*.jpg", "/**/*.gif", "/**/*.svg",
+                        "/**/*.ico", "/**/*.ttf", "/**/*.woff",
+                        "/**/*.otf");
     }
 
     @Override
