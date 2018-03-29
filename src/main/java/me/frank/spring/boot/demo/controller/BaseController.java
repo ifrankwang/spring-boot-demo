@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import me.frank.spring.boot.demo.dto.AppResponse;
 import me.frank.spring.boot.demo.exception.ServiceException;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,7 +45,7 @@ public class BaseController {
             produces = APPLICATION_JSON_VALUE,
             value = "异常接口",
             notes = "不做调用，校验Token异常将转向此接口")
-    @PostMapping(value = AUTH_FAILED_URL)
+    @RequestMapping(value = AUTH_FAILED_URL)
     public AppResponse error(HttpServletRequest request) {
         final ServiceException ERROR = (ServiceException) request.getAttribute(ATTR_ERROR);
         return AppResponse.failed(ERROR.getMessage());
