@@ -19,8 +19,7 @@ import java.util.List;
 import static com.google.common.base.Predicates.and;
 import static com.google.common.base.Predicates.not;
 import static com.google.common.collect.Lists.newArrayList;
-import static me.frank.spring.boot.demo.properties.SecurityConst.HEADER_NAME;
-import static me.frank.spring.boot.demo.properties.SecurityConst.LOGIN_URL;
+import static me.frank.spring.boot.demo.properties.SecurityConst.*;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 /**
@@ -59,7 +58,8 @@ public class Swagger2Config {
     private Predicate<String> paths() {
         return and(regex("/.*"),
                    not(regex("/error")),
-                   not(regex("/application.*")));
+                   not(regex("/application.*")),
+                   not(regex(AUTH_FAILED_URL)));
     }
 
     private ApiKey apiKey() {
@@ -68,11 +68,12 @@ public class Swagger2Config {
 
     @SuppressWarnings("all")
     private SecurityContext securityContext() {
+        final String SUFFIX = "/.*";
         return SecurityContext.builder()
                               .securityReferences(defaultAuth())
                               .forPaths(and(
-                                      regex("/.*"),
-                                      not(regex("/no-auth/.*")),
+                                      regex(SUFFIX),
+                                      not(regex(NO_AUTH_URL + SUFFIX)),
                                       not(regex(LOGIN_URL))))
                               .build();
     }
