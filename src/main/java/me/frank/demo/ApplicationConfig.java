@@ -55,7 +55,7 @@ public class ApplicationConfig {
                 registry.addMapping("/**")
                         .allowCredentials(true)
                         .allowedOrigins("*")
-                        .allowedMethods("GET", "POST", "OPTIONS")
+                        .allowedMethods("GET", "POST", "OPTIONS", "PUT", "DELETE")
                         .allowedHeaders(HEADER_NAME, "Content-Type", "X-Requested-With", "accept",
                                         "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers");
             }
