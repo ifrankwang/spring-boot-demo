@@ -1,58 +1,69 @@
-# 配置服务器端口，默认为 8080
-server.port: 8080
-# 配置访问路径，默认为 /
-server.context-path: /spring-boot-demo
-# 配置码，默认为 UTF-8
-server.tomcat.uri-encoding: UTF-8
-# 是否开启压缩，默认为关闭
-server.compression.enabled: true
-# 项目资源文件起头
-spring.application.name: app
-# 项目启动模式：dev开发、测试；prod生产
-spring.profiles.active: dev
+debug: true
 
-# log文件存放地址及名称
-logging.file: ./logs/spring-boot-demo.log
-# 接口调用日志
-server.tomcat.basedir: ./
-server.tomcat.accesslog.enabled: true
-server.tomcat.accesslog.request-attributes-enabled: true
-# log 等级
-# all > trace > debug > info > warn > error > fatal > off
-logging.level.me.frank: debug
-# sql 查询语句
-logging.level.jdbc.sqlonly: debug
-# sql 查询返回的数据表
-logging.level.jdbc.resultsettable: debug
-# 以下只显示警告及异常
-logging.level.org.springframework.web.servlet: warn
-logging.level.org.springframework.boot.actuate.endpoint.mvc: warn
-logging.level.springfox.documentation: warn
-logging.level.com.zaxxer.hikari.pool.HikariPool: warn
-# 以下只显示异常log
-logging.level.jdbc.audit: error
-logging.level.jdbc.resultset: error
-logging.level.jdbc.sqltiming: error
-logging.level.jdbc.connection: error
+server:
+  port: 8000
+  tomcat:
+    uri-encoding: UTF-8
+    basedir: ./
+    accesslog:
+      enabled: true
+      request-attributes-enabled: true
+  compression:
+    enabled: true
+  servlet:
+    context-path: /spring-boot-demo
 
-# hikari 数据源配置
-hikari.datasource.jdbc-url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&characterEncoding=utf-8
-hikari.datasource.username: root
-hikari.datasource.password: 123456
-hikari.datasource.maximum-pool-size: 30
-hikari.datasource.max-lifetime: 1800000
-hikari.datasource.minimum-idle: 20
-hikari.datasource.idle-timeout: 100000
-hikari.datasource.driver-class-name: com.mysql.jdbc.Driver
+spring:
+  application:
+    name: spring-boot-demo
+  profiles:
+    active: dev
+  jpa:
+    properties:
+      hibernate.enable_lazy_load_no_trans: true
+  output:
+    ansi:
+      enabled: detect
 
-spring.jpa.properties.hibernate.enable_lazy_load_no_trans: true
+# 日志配置
+logging:
+  file: ./logs/shop-manage-server.log
+  level:
+    me.frank.demo: debug
+    jdbc.sqlonly: debug
+    jdbc.resultsettable: debug
+    jdbc.audit: error
+    jdbc.resultset: error
+    jdbc.sqltiming: error
+    jdbc.connection: error
+    org.springframework.web.servlet: warn
+    org.springframework.boot.actuate.endpoint.mvc: warn
+    springfox.documentation: warn
+    com.zaxxer.hikari.pool.HikariPool: warn
+    org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener: warn
+    org.springframework.boot.actuate.endpoint.web.servlet.ControllerEndpointHandlerMapping: warn
+    org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping: warn
+    org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter: warn
 
-# mybatis 配置
-# 配置文件所在位置
-mybatis.config-location: classpath:mybatis-config.xml
-# *Mapper.xml 文件所在位置
-mybatis.mapper-locations: classpath:me/frank/spring/boot/demo/mapper/*Mapper.xml
+# MyBatis配置
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:me/frank/demo/mapper/*Mapper.xml
+  type-aliases-package: me.frank.demo.entity
 
-# jwt 配置
-security.expiration-time: 86400000
-security.secret: 9Z5g6M4%9btE
+# jwt配置
+jwt:
+  valid-duration: 86400000
+  encrypt-key: 9Z5g6M4%9btE
+
+# 数据库参数
+hikari:
+  datasource:
+    jdbc-url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    maximum-pool-size: 30
+    max-lifetime: 1800000
+    minimum-idle: 20
+    idle-timeout: 100000
+    driver-class-name: com.mysql.jdbc.Driver
