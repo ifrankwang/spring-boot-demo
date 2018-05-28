@@ -63,7 +63,7 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
                 user.getPassword(),
                 user.getAuthorities()
         );
-        authToken.setDetails(username);
+        authToken.setDetails(user);
         return authToken;
     }
 }
