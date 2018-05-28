@@ -33,7 +33,11 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
-    public LoginController(UserService service, GroupService groupService, JwtService jwtService, PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
+    public LoginController(UserService service,
+                           GroupService groupService,
+                           JwtService jwtService,
+                           PasswordEncoder passwordEncoder,
+                           ModelMapper modelMapper) {
         this.service = service;
         this.groupService = groupService;
         this.jwtService = jwtService;
@@ -46,7 +50,7 @@ public class LoginController {
     public AppResponse<String> login(@Validated @RequestBody LoginInfo loginInfo,
                                      HttpServletResponse response) {
         final AppUser user = getUserWithLoginInfo(loginInfo);
-        return genTokenResponse(user.getUsername(), response);
+        return genTokenResponseWithUsernameAndHttpResponse(user.getUsername(), response);
     }
 
     /**
@@ -66,20 +70,26 @@ public class LoginController {
         service.findByUsername(loginInfo.getUsername()).ifPresent(user -> {
             throw USER_ALREADY_EXISTS;
         });
-        final Group group = groupService.findCommonUserGroup().orElseThrow(() -> USER_GROUP_NOT_EXISTS);
+        final AppUser user = createNewUserByLoginInfo(loginInfo);
+        return genTokenResponseWithUsernameAndHttpResponse(user.getUsername(), response);
+    }
+
+    private AppUser createNewUserByLoginInfo(LoginInfo loginInfo) {
         final AppUser user = modelMapper.map(loginInfo, AppUser.class);
+        final Group group = groupService.findCommonUserGroup()
+                                        .orElseThrow(() -> USER_GROUP_NOT_EXISTS);
 
         user.encryptPasswordWithEncoder(passwordEncoder);
         user.setGroup(group).saveBy(service.getRepo());
         user.createAccountIfNotExists().saveBy(service.getRepo());
 
-        return genTokenResponse(user.getUsername(), response);
+        return user;
     }
 
     /**
      * 生成token回应体，会在response的headers里面加入token
      */
-    private AppResponse<String> genTokenResponse(String subject, HttpServletResponse response) {
+    private AppResponse<String> genTokenResponseWithUsernameAndHttpResponse(String subject, HttpServletResponse response) {
         final String token = jwtService.genTokenFor(subject);
         response.setHeader(HEADER_NAME, token);
         return success(token);
