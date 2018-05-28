@@ -1,7 +1,6 @@
 # spring-boot 示例项目
 ## 说明
-本示例是一个普通的`spring-boot-web`项目，集成了`Swagger2`，`QueryDsl`，`MyBatis`以及`spring-boot-web`中自带的`Hibernate`。详情请查看项目中的注解。
-启动项目后，在http://localhost:8000/spring-boot-demo/swagger-ui.html中查看接口。
+本示例是一个普通的`spring-boot-web`项目，集成了`Swagger2`，`QueryDsl`，`MyBatis`以及`spring-boot-web`中自带的`Hibernate`。详情请查看项目中的注解。启动项目后，在 [Swagger-UI](http://localhost:8000/promise-app-server/swagger-ui.html) 中查看接口。
 
 ## 注意
 1. 项目需要安装`lombok`插件！！！
@@ -11,7 +10,7 @@
 4. `MyBatis`相关的`XML`文件在`resources`下的`me/frank/demo/mapper`文件夹下创建
 5. 需要在`Swagger-UI`中显示的`Controller`类需要标注`@Api`，具体使用方法参考`BaseController`
 6. 需要简化`POJO`类的显示，需要标注`@Data`，具体使用方法参考`AppResponse`
-8. 双向引用的实体类需要在`@ToString`和`@EqualsAndHashCode`里排除引用的类对象，以免造成系统错误
+8. 双向引用的实体类需要在`@ToString`和`@EqualsAndHashCode`里排除引用的类对象，以免造成系统错误，具体使用方法参考`AppUser`
 9. 代码尽量符合阿里`Java`代码规约，`Eclipse`和`IntelliJ`都有相应的插件可以安装
 
 ## 启动步骤：
@@ -44,3 +43,22 @@
 12. `security`包中存放和权限、安全相关的`Filter`
 13. `service`包中存放业务相关类
 14. `util`包中存放工具类
+
+## Git Commit 规范
+
+Git `commit`的时候，按照以下消息规范的范围进行`commit`。最好不要出现一次`commit`同时出现多个范围的修改，如：一次`commit`中新增了接口，同时又修改了配置。
+
+## Git Commit 消息规范
+
+1. 用`A 新增`作为前缀表示**新增功能**，如`A 新增 消息接口`
+2. 用`C 配置`作为前缀表示**系统配置修改**，如`C 配置 修改数据库连接地址`
+3. 用`D 文档`作为前缀表示**文档相关修改**，如`D 文档 完善README`
+4. 用`F 修复`作为前缀表示**修复bug**，如`F 修复 消息接口逻辑错误`
+5. 用`M 其他`作为前缀表示**其他无法归类的修改**，如`M 其他 删除不必要的文件`
+6. 用`O 优化`作为前缀表示**代码优化**，如`O 优化 消息接口逻辑优化`
+7. 用`R 重构`作为前缀表示**代码重构**，如`R 重构 消息接口代码重构`
+8. 用`S 格式`作为前缀表示**代码格式修改**，如`S 格式 消息接口代码格式修改`
+
+## 前后端协作建议
+
+建议使用[石墨](https://shimo.im/)协作
