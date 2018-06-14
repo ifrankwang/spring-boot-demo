@@ -44,20 +44,48 @@
 13. `service`包中存放业务相关类
 14. `util`包中存放工具类
 
-## Git Commit 规范
+## 项目规范
+
+### Controller
+
+1. 在`com.gedi.spring.controller`包中创建`Controller`类
+2. 所有接口类的`Endpoint`需以`API_PREFIX`起头，可参考`BaseController.noAuthTest()`
+3. 不需要权限访问的接口，需要加上`NO_AUTH_URL`，可参考`BaseController.noAuthTest()`
+4. 所有接口类需要标注`@Api(tags = [描述])`，可参考`BaseController`
+5. 所有接口方法需要标注`@ApiOperation(value = "[操作]", notes = "[描述]")`，可参考`BaseController.noAuthTest()`
+6. 需要控制访问用户身份的接口，需要加上`@PreAuthorize("hasAuthority('[身份]')")`，可参考`BaseController.authAdminTest()`
+7. 所有除操作成功状态外，有返回数据的，都写明返回类型。如果返回类型不是基本类型（`String`, `Integer`...），需要在类里面给每个属性标注`@ApiModelProperty("[说明]")`，可参考`BaseController.noAuthTest()`
+8. 业务逻辑放在`Controller`里处理，`Service`作为相关信息服务，只提供最基础的业务处理，可参考`LoginController`
+
+### Service
+
+1. 在`com.gedi.spring.service`包中定义服务接口，如需在`Controller`里获取到`Service`拥有的`Repository`，需要继承`RepoAvailable`接口，可参考`GroupService`
+2. 在`com.gedi.spring.service.impl`包中实现服务接口，命名规则参考现有`Service`
+
+### Repository
+
+1. 在`com.gedi.spring.repo`包中创建`JPA Repository`接口，需要继承同包下的`Repository`接口
+
+### Entity
+
+1. `Entity`在数据库存储的状态、类型等为`01`, `02`这类字符串的，在代码中需要用相应的`enum`来体现
+2. `Entity`的`List`, `Set`类型属性都必须初始化
+
+### Git Commit
 
 Git `commit`的时候，按照以下消息规范的范围进行`commit`。最好不要出现一次`commit`同时出现多个范围的修改，如：一次`commit`中新增了接口，同时又修改了配置。
 
-## Git Commit 消息规范
+### Git Commit 消息
 
 1. 用`A 新增`作为前缀表示**新增功能**，如`A 新增 消息接口`
 2. 用`C 配置`作为前缀表示**系统配置修改**，如`C 配置 修改数据库连接地址`
 3. 用`D 文档`作为前缀表示**文档相关修改**，如`D 文档 完善README`
 4. 用`F 修复`作为前缀表示**修复bug**，如`F 修复 消息接口逻辑错误`
 5. 用`M 其他`作为前缀表示**其他无法归类的修改**，如`M 其他 删除不必要的文件`
-6. 用`O 优化`作为前缀表示**代码优化**，如`O 优化 消息接口逻辑优化`
+6. 用`O 优化`作为前缀表示**代码优化**，如`O 优化 消息接口优化`
 7. 用`R 重构`作为前缀表示**代码重构**，如`R 重构 消息接口代码重构`
-8. 用`S 格式`作为前缀表示**代码格式修改**，如`S 格式 消息接口代码格式修改`
+8. 用`S 规范`作为前缀表示**代码规范相关调整**，如`S 规范 消息接口代码格式修改`
+9. 用`U 更新`作为前缀表示**根据业务需求调整做的修改**，如`U 更新 消息接口逻辑修改`
 
 ## 前后端协作建议
 
