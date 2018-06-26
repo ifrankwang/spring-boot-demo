@@ -46,6 +46,16 @@
 
 ## 项目规范
 
+### HTTP 请求设计
+
+1. `GET` 请求用于获取资源
+2. `PUT` 请求用于完全修改资源
+3. `PATCH` 请求用于部分修改资源
+4. `POST` 请求用于新增资源
+5. `DELETE` 请求用于删除资源
+6. 请求 URL 中不应包含 `get`, `create`, `delete`, `update` 等操作词
+7. 请求 URL 中出现多个单词应用 `kebab-case(横杠式命名风格)`，如：`recharge-record
+
 ### Controller
 
 1. 在`com.gedi.spring.controller`包中创建`Controller`类
