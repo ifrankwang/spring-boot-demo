@@ -6,6 +6,7 @@ import me.frank.demo.dto.AppResponse;
 import me.frank.demo.dto.LoginInfo;
 import me.frank.demo.entity.AppUser;
 import me.frank.demo.entity.Group;
+import me.frank.demo.service.AccountService;
 import me.frank.demo.service.GroupService;
 import me.frank.demo.service.JwtService;
 import me.frank.demo.service.UserService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 import static me.frank.demo.dto.AppResponse.success;
+import static me.frank.demo.entity.Account.newAccountOf;
 import static me.frank.demo.exception.ServiceException.*;
 import static me.frank.demo.properties.SecurityConst.*;
 
@@ -28,17 +30,17 @@ import static me.frank.demo.properties.SecurityConst.*;
 @RequestMapping(API_PREFIX)
 public class LoginController {
     private final UserService service;
+    private final AccountService accountService;
     private final GroupService groupService;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
-    public LoginController(UserService service,
-                           GroupService groupService,
-                           JwtService jwtService,
-                           PasswordEncoder passwordEncoder,
-                           ModelMapper modelMapper) {
+    public LoginController(UserService service, AccountService accountService,
+                           GroupService groupService, JwtService jwtService,
+                           PasswordEncoder passwordEncoder, ModelMapper modelMapper) {
         this.service = service;
+        this.accountService = accountService;
         this.groupService = groupService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
@@ -59,7 +61,7 @@ public class LoginController {
     private AppUser getUserWithLoginInfo(LoginInfo loginInfo) {
         final AppUser user = service.findByUsername(loginInfo.getUsername()).orElseThrow(() -> INVALID_USER);
         user.checkIfPasswordEqualsToWithEncoder(loginInfo.getPassword(), passwordEncoder).orElseThrow(INVALID_PASSWORD);
-        user.createAccountIfNotExists().saveBy(service.getRepo());
+        user.checkIfAccountExists().orElse(() -> newAccountOf(user).saveBy(accountService));
         return user;
     }
 
@@ -80,8 +82,8 @@ public class LoginController {
                                         .orElseThrow(() -> USER_GROUP_NOT_EXISTS);
 
         user.encryptPasswordWithEncoder(passwordEncoder);
-        user.setGroup(group).saveBy(service.getRepo());
-        user.createAccountIfNotExists().saveBy(service.getRepo());
+        user.setGroup(group).saveBy(service);
+        user.checkIfAccountExists().orElse(() -> newAccountOf(user).saveBy(accountService));
 
         return user;
     }

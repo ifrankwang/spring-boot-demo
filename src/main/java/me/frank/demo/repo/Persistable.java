@@ -1,6 +1,6 @@
 package me.frank.demo.repo;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import me.frank.demo.service.RepoAvailable;
 
 /**
  * @author 王明哲
@@ -13,7 +13,7 @@ public interface Persistable<T, ID> {
      * @return 持久化实体类对象
      */
     @SuppressWarnings({"all"})
-    default T saveBy(JpaRepository<T, ID> repository) {
-        return repository.save((T) this);
+    default T saveBy(RepoAvailable<T, ID> repoAvailable) {
+        return repoAvailable.getRepo().save((T) this);
     }
 }

@@ -43,7 +43,7 @@ public class AppUser implements Persistable<AppUser, Long> {
     @JoinColumn(name = "group_id")
     private Group group;
 
-    @OneToOne(fetch = LAZY, cascade = ALL, mappedBy = "user")
+    @OneToOne(fetch = LAZY, cascade = ALL, mappedBy = "owner")
     private Account account;
 
     public Persistable<AppUser, Long> setGroup(Group group) {
@@ -63,10 +63,7 @@ public class AppUser implements Persistable<AppUser, Long> {
         this.password = encoder.encode(this.password);
     }
 
-    public Persistable<AppUser, Long> createAccountIfNotExists() {
-        if (null == getAccount()) {
-            setAccount(new Account(this));
-        }
-        return this;
+    public Checkable checkIfAccountExists() {
+        return of(null != getAccount());
     }
 }
