@@ -4,8 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import me.frank.demo.dto.AppResponse;
 import me.frank.demo.exception.ServiceException;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,19 +34,17 @@ public class BaseController {
     @ApiOperation(value = "测试接口",
                   notes = "需要管理员权限访问<br/>" +
                           "返回数据：Hello ${userName}!")
-    @PreAuthorize("hasAuthority('Admin')")
-    @RequestMapping(value = API_PREFIX + "/auth-admin-test", method = {GET, POST})
-    public AppResponse<String> authAdminTest(Authentication authentication) {
-        return success("Hello " + authentication.getName() + "!");
+    @GetMapping(value = API_PREFIX + "/admin/test")
+    public AppResponse<String> authAdminTest() {
+        return success("Hello world!");
     }
 
     @ApiOperation(value = "测试接口",
                   notes = "需要普通用户权限访问<br/>" +
                           "返回数据：Hello ${userName}!")
-    @PreAuthorize("hasAuthority('User')")
-    @RequestMapping(value = API_PREFIX + "/auth-user-test", method = {GET, POST})
-    public AppResponse<String> authUserTest(Authentication authentication) {
-        return success("Hello " + authentication.getName() + "!");
+    @GetMapping(value = API_PREFIX + "/user/test")
+    public AppResponse<String> authUserTest() {
+        return success("Hello world!");
     }
 
     @ApiOperation(value = "异常接口，不做调用，校验Token异常将转向此接口",

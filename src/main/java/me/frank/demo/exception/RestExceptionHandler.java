@@ -3,7 +3,7 @@ package me.frank.demo.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,8 +37,8 @@ public class RestExceptionHandler {
     }
 
     @SuppressWarnings("unused")
-    @ExceptionHandler(AccessDeniedException.class)
-    protected ResponseEntity<Object> handleArgumentException(AccessDeniedException ex, WebRequest request) {
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    protected ResponseEntity<Object> handleArgumentException(HttpRequestMethodNotSupportedException ex, WebRequest request) {
         logger.warn("\n捕获异常！异常信息：请求权限不足！");
         return new ResponseEntity<>(failed(INSUFFICIENT_PERMISSION.getMessage()), OK);
     }

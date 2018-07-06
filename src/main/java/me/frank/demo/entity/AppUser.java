@@ -1,21 +1,19 @@
 package me.frank.demo.entity;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import me.frank.demo.repo.Persistable;
+import me.frank.demo.enums.UserGender;
 import me.frank.demo.util.Checkable;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
 
-import static javax.persistence.CascadeType.ALL;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
-import static me.frank.demo.enums.GenderType.OTHERS;
 import static me.frank.demo.util.Checkable.of;
 
 /**
@@ -24,8 +22,6 @@ import static me.frank.demo.util.Checkable.of;
  */
 @Data
 @Entity(name = "users")
-@ToString(exclude = {"account"})
-@EqualsAndHashCode(exclude = {"account"})
 public class AppUser implements Persistable<AppUser, Long> {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,37 +29,50 @@ public class AppUser implements Persistable<AppUser, Long> {
     private String username;
     private String password;
     private String nickname;
-    private String gender = OTHERS.getValue();
+    @Enumerated(EnumType.STRING)
+    private UserGender gender;
 
-    @OneToOne(fetch = LAZY, cascade = REFRESH)
-    @JoinColumn(name = "file_id")
-    private File avatar;
+    @ManyToMany(fetch = LAZY, cascade = REFRESH)
+    @JoinTable(name = "users_roles",
+               joinColumns = @JoinColumn(name = "user_id"),
+               inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roles;
 
-    @ManyToOne(fetch = LAZY, cascade = REFRESH)
-    @JoinColumn(name = "group_id")
-    private Group group;
-
-    @OneToOne(fetch = LAZY, cascade = ALL, mappedBy = "owner")
-    private Account account;
-
-    public Persistable<AppUser, Long> setGroup(Group group) {
-        this.group = group;
+    public AppUser setRoles(List<Role> roles) {
+        this.roles = roles;
         return this;
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return group.getAuthorities();
+    public List<String> getRoleNames() {
+        return roles.stream().map(Role::getName).collect(toList());
     }
 
-    public Checkable checkIfPasswordEqualsToWithEncoder(String password, PasswordEncoder encoder) {
-        return of(encoder.matches(password, this.password));
+    public List<String> getStringPermission() {
+        List<String> permissionNames = emptyList();
+        for (Role role : roles) {
+            final List<String> permissions = role.getPermissionNames();
+            permissionNames = Stream.concat(permissionNames.stream(), permissions.stream()).collect(toList());
+        }
+        return permissionNames;
     }
 
-    public void encryptPasswordWithEncoder(PasswordEncoder encoder) {
-        this.password = encoder.encode(this.password);
+    public UserPasswordEncoder using(PasswordEncoder encoder) {
+        return new UserPasswordEncoder(encoder);
     }
 
-    public Checkable checkIfAccountExists() {
-        return of(null != getAccount());
+    public class UserPasswordEncoder {
+        private PasswordEncoder encoder;
+
+        UserPasswordEncoder(PasswordEncoder encoder) {
+            this.encoder = encoder;
+        }
+
+        public Checkable checkIfPasswordEqualsTo(String password) {
+            return of(encoder.matches(password, getPassword()));
+        }
+
+        public void encryptPassword() {
+            setPassword(encoder.encode(getPassword()));
+        }
     }
 }

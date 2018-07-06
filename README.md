@@ -58,7 +58,7 @@
 
 ### Controller
 
-1. 在`com.gedi.spring.controller`包中创建`Controller`类
+1. 在`me.frank.demo.controller`包中创建`Controller`类
 2. 所有接口类的`Endpoint`需以`API_PREFIX`起头，可参考`BaseController.noAuthTest()`
 3. 不需要权限访问的接口，需要加上`NO_AUTH_URL`，可参考`BaseController.noAuthTest()`
 4. 所有接口类需要标注`@Api(tags = [描述])`，可参考`BaseController`
@@ -69,12 +69,12 @@
 
 ### Service
 
-1. 在`com.gedi.spring.service`包中定义服务接口，如需在`Controller`里获取到`Service`拥有的`Repository`，需要继承`RepoAvailable`接口，可参考`GroupService`
-2. 在`com.gedi.spring.service.impl`包中实现服务接口，命名规则参考现有`Service`
+1. 在`me.frank.demo.service`包中定义服务接口，如需在`Controller`里获取到`Service`拥有的`Repository`，需要继承`RepoAvailable`接口，可参考`GroupService`
+2. 在`me.frank.demo.service.impl`包中实现服务接口，命名规则参考现有`Service`
 
 ### Repository
 
-1. 在`com.gedi.spring.repo`包中创建`JPA Repository`接口，需要继承同包下的`Repository`接口
+1. 在`me.frank.demo.repo`包中创建`JPA Repository`接口，需要继承同包下的`Repository`接口
 
 ### Entity
 

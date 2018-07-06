@@ -12,14 +12,6 @@ import java.util.Optional;
 public interface UserService extends RepoAvailable<AppUser, Long> {
 
     /**
-     * 根据id获取用户信息
-     *
-     * @param id 用户id
-     * @return 用户信息
-     */
-    Optional<AppUser> findById(long id);
-
-    /**
      * 根据用户名获取用户信息
      *
      * @param username 用户名
