@@ -1,4 +1,4 @@
-package me.frank.demo.entity;
+package me.frank.demo.repo;
 
 import me.frank.demo.service.RepoAvailable;
 

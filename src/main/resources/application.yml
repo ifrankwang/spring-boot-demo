@@ -17,7 +17,7 @@ spring:
   application:
     name: spring-boot-demo
   profiles:
-    active: default
+    active: dev
   jpa:
     properties:
       hibernate.enable_lazy_load_no_trans: true
@@ -67,9 +67,3 @@ hikari:
     minimum-idle: 20
     idle-timeout: 100000
     driver-class-name: com.mysql.jdbc.Driver
-
-# Shiro
-shiro:
-  sessionManager:
-    sessionIdCookieEnabled: false
-    sessionIdUrlRewritingEnabled: false
