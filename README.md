@@ -1,6 +1,6 @@
 # spring-boot 示例项目
 ## 说明
-本示例是一个普通的`spring-boot-web`项目，集成了`Swagger2`，`QueryDsl`，`MyBatis`以及`spring-boot-web`中自带的`Hibernate`。详情请查看项目中的注解。启动项目后，在 [Swagger-UI](http://localhost:8000/promise-app-server/swagger-ui.html) 中查看接口。
+本示例是一个普通的`spring-boot-web`项目，集成了`Swagger2`，`QueryDsl`，`MyBatis`，`Hibernate`和`Spring Security`。详情请查看项目中的注解。启动项目后，在 [Swagger-UI](http://localhost:8000/promise-app-server/swagger-ui.html) 中查看接口。
 
 ## 注意
 1. 项目需要安装`lombok`插件！！！
