@@ -155,6 +155,18 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.ifrankwang</groupId>
+            <artifactId>converter</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ifrankwang</groupId>
+            <artifactId>project-utils</artifactId>
+            <version>1.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -193,4 +205,17 @@
         
         <testSourceDirectory>src/test/java</testSourceDirectory>
     </build>
+
+    <repositories>
+        <repository>
+            <id>mvn-repo</id>
+            <url>https://rawgit.com/ifrankwang/repository/master</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>

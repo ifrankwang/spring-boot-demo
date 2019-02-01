@@ -1,5 +1,0 @@
-DROP DATABASE IF EXISTS `test`;
-
-CREATE DATABASE `test`
-  COLLATE utf8_bin
-  DEFAULT CHARSET = utf8;

@@ -6,7 +6,7 @@
 1. 项目需要安装`lombok`插件！！！
 2. 创建数据库的`.sql`文件在`/files`文件夹下，请自行创建数据库后并查看`/src/main/resources/application.yml`中数据源地址是否需要修改后再进行测试
 3. `resources`下带`-dev`的`.yml`文件表示测试环境下的配置；带`-prod`表示生产环境下的配置
-3. `MyBatis`相关的接口类在`me.frank.demo.mapper`包内创建
+3. `MyBatis`相关的接口类在`com.github.ifrankwang.spring.mapper`包内创建
 4. `MyBatis`相关的`XML`文件在`resources`下的`me/frank/demo/mapper`文件夹下创建
 5. 需要在`Swagger-UI`中显示的`Controller`类需要标注`@Api`，具体使用方法参考`BaseController`
 6. 需要简化`POJO`类的显示，需要标注`@Data`，具体使用方法参考`AppResponse`
@@ -27,7 +27,7 @@
 
 ## 项目结构
 
-**注：以下包名的前缀统一为`me.frank.demo`**
+**注：以下包名的前缀统一为`com.github.ifrankwang.spring`**
 
 1. `aspect`包中存放切面操作相关类`MethodLogger`类会在`Controller`和`Service`方法执行前在控制台中输出方法名
 2. `config`包中存放项目的配置类

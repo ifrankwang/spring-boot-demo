@@ -29,7 +29,7 @@ spring:
 logging:
   file: ./logs/shop-manage-server.log
   level:
-    me.frank.demo: debug
+    com.github.ifrankwang.spring: debug
     jdbc.sqlonly: debug
     jdbc.resultsettable: debug
     jdbc.audit: error
@@ -45,23 +45,17 @@ logging:
     org.springframework.boot.actuate.endpoint.web.servlet.WebMvcEndpointHandlerMapping: warn
     org.springframework.boot.web.servlet.filter.OrderedRequestContextFilter: warn
 
-# MyBatis配置
-mybatis:
-  config-location: classpath:mybatis-config.xml
-  mapper-locations: classpath:me/frank/demo/mapper/*Mapper.xml
-  type-aliases-package: me.frank.demo.entity
-
-# jwt配置
-jwt:
+# token配置
+token:
   valid-duration: 86400000
   encrypt-key: 9Z5g6M4%9btE
 
 # 数据库参数
 hikari:
   datasource:
-    jdbc-url: jdbc:mysql://localhost:3306/test?useSSL=false&useUnicode=true&characterEncoding=utf-8
-    username: root
-    password: 123456
+    jdbc-url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8
+    username: test
+    password: test1234
     maximum-pool-size: 30
     max-lifetime: 1800000
     minimum-idle: 20
