@@ -1,11 +1,11 @@
-package com.github.ifrankwang.spring.api.service;
+package com.github.ifrankwang.spring.api.facade;
 
 import com.github.ifrankwang.spring.api.dto.security.LoginInfo;
 
 /**
  * @author Frank Wang
  */
-public interface LoginService {
+public interface LoginFacade {
     /**
      * 用户名密码登录
      *

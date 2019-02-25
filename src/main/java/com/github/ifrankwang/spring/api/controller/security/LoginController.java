@@ -2,7 +2,7 @@ package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
 import com.github.ifrankwang.spring.api.dto.security.LoginInfo;
-import com.github.ifrankwang.spring.api.service.LoginService;
+import com.github.ifrankwang.spring.api.facade.LoginFacade;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.properties.SecurityConst;
 import io.swagger.annotations.Api;
@@ -22,22 +22,22 @@ import static com.github.ifrankwang.spring.api.dto.AppResponse.success;
 @Api(tags = {TAG_SECURITY, TAG_LOGIN})
 @RestController
 public class LoginController {
-    private final LoginService loginService;
+    private final LoginFacade loginFacade;
 
-    public LoginController(LoginService loginService) {
-        this.loginService = loginService;
+    public LoginController(LoginFacade loginFacade) {
+        this.loginFacade = loginFacade;
     }
 
     @ApiOperation("用户名密码登录")
     @PostMapping(SecurityConst.LOGIN_URL)
     public AppResponse<String> login(@Validated @RequestBody LoginInfo loginInfo) {
-        return success(loginService.login(loginInfo));
+        return success(loginFacade.login(loginInfo));
     }
 
     @ApiOperation("更新Token")
     @GetMapping(SecurityConst.TOKEN_URL)
     public AppResponse<String> refreshToken(@ApiParam(hidden = true) @RequestHeader(SecurityConst.HEADER_NAME) String token) {
-        return success(loginService.login(token));
+        return success(loginFacade.login(token));
     }
 
     @ApiOperation(value = "异常接口，不做调用，校验Token异常将转向此接口", hidden = true)

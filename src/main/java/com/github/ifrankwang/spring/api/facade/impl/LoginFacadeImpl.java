@@ -1,7 +1,7 @@
-package com.github.ifrankwang.spring.api.service.impl;
+package com.github.ifrankwang.spring.api.facade.impl;
 
 import com.github.ifrankwang.spring.api.dto.security.LoginInfo;
-import com.github.ifrankwang.spring.api.service.LoginService;
+import com.github.ifrankwang.spring.api.facade.LoginFacade;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.exception.InvalidUsernameOrPasswordException;
 import com.github.ifrankwang.spring.module.security.factory.UserFactory;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
  * @author Frank Wang
  */
 @Service
-public class LoginServiceImpl implements LoginService {
+public class LoginFacadeImpl implements LoginFacade {
     private final UserFactory userFactory;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
-    public LoginServiceImpl(UserFactory userFactory, PasswordEncoder passwordEncoder, TokenService tokenService) {
+    public LoginFacadeImpl(UserFactory userFactory, PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.userFactory = userFactory;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
