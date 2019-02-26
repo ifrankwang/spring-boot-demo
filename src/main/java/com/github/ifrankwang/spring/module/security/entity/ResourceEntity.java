@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.module.security.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
+import static javax.persistence.CascadeType.PERSIST;
+import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -18,7 +21,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @Entity(name = "resource")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "parent")
+@NoArgsConstructor
+@ToString(exclude = {"parent", "children"})
 public class ResourceEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -27,13 +31,17 @@ public class ResourceEntity {
     private String tag;
     private LocalDateTime createTime = now();
 
-    @OneToMany
+    @ManyToOne(cascade = REFRESH)
+    private ResourceEntity parent;
+
+    @OneToMany(cascade = {PERSIST, REFRESH})
     @JoinTable(name = "resource_operation", inverseJoinColumns = @JoinColumn(name = "operation_id"))
     private List<OperationEntity> operations = new ArrayList<>();
 
-    @ManyToOne
-    private ResourceEntity parent;
+    @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true)
+    private List<ResourceEntity> children = new ArrayList<>();
 
-    @OneToMany
-    private List<ResourceEntity> children;
+    public ResourceEntity(Long id) {
+        this.id = id;
+    }
 }

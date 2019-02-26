@@ -3,6 +3,7 @@ package com.github.ifrankwang.spring.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -37,15 +38,22 @@ public class RestExceptionHandler {
 
     @SuppressWarnings("unused")
     @ExceptionHandler(AccessDeniedException.class)
-    protected ResponseEntity<Object> handleArgumentException(AccessDeniedException ex, WebRequest request) {
+    protected ResponseEntity<Object> handleAuthorityException(AccessDeniedException ex, WebRequest request) {
         logger.warn("\n捕获异常！异常信息：请求权限不足！");
         return new ResponseEntity<>(failed("权限不足！"), OK);
     }
 
     @SuppressWarnings("unused")
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    protected ResponseEntity<Object> handleRequestException(HttpMessageNotReadableException ex, WebRequest request) {
+        logger.warn("\n捕获请求异常！{}", ex.getMessage());
+        return new ResponseEntity<>(failed("请求数据有误！"), OK);
+    }
+
+    @SuppressWarnings("unused")
     @ExceptionHandler(Exception.class)
-    protected ResponseEntity<Object> handleArgumentException(Exception ex, WebRequest request) {
-        logger.warn("\n捕获系统异常！{}", ex.getMessage());
+    protected ResponseEntity<Object> handleSystemException(Exception ex, WebRequest request) {
+        logger.error("\n捕获系统异常！", ex);
         return new ResponseEntity<>(failed("系统异常！"), OK);
     }
 }
