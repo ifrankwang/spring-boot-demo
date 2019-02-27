@@ -7,6 +7,8 @@ import com.github.ifrankwang.spring.module.security.service.OperationService;
 import com.github.ifrankwang.utils.misc.Checkable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
@@ -16,6 +18,11 @@ public class OperationServiceImpl implements OperationService {
 
     public OperationServiceImpl(OperationRepo repo) {
         this.repo = repo;
+    }
+
+    @Override
+    public List<OperationEntity> getAll() {
+        return repo.findAll();
     }
 
     @Override

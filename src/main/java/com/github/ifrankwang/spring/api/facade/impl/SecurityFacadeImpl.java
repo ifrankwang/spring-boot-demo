@@ -14,6 +14,8 @@ import com.github.ifrankwang.spring.module.security.service.OperationService;
 import com.github.ifrankwang.spring.module.security.service.ResourceService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
@@ -28,6 +30,12 @@ public class SecurityFacadeImpl implements SecurityFacade {
         this.resourceService = resourceService;
         this.operationService = operationService;
         this.resourceMapper = resourceMapper;
+    }
+
+    @Override
+    public List<OperationDto> getOperationList() {
+        final List<OperationEntity> operationEntities = operationService.getAll();
+        return resourceMapper.fromOperationEntities(operationEntities);
     }
 
     @Override

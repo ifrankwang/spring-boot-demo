@@ -10,13 +10,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_RESOURCE;
-import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_SECURITY;
+import java.util.List;
+
+import static com.github.ifrankwang.spring.api.controller.ApiConstants.*;
 import static com.github.ifrankwang.spring.api.dto.AppResponse.success;
 import static com.github.ifrankwang.spring.module.security.properties.SecurityConst.API_PREFIX;
 
@@ -34,7 +32,13 @@ public class SecurityController {
         this.facade = facade;
     }
 
-    @ApiOperation(value = "创建模块可执行的操作", tags = TAG_RESOURCE)
+    @ApiOperation(value = "获取模块可执行的操作", tags = TAG_OPERATION)
+    @GetMapping("/operation/list")
+    public AppResponse<List<OperationDto>> getOperationList() {
+        return success(facade.getOperationList());
+    }
+
+    @ApiOperation(value = "创建模块可执行的操作", tags = TAG_OPERATION)
     @PostMapping("/operation")
     public AppResponse<OperationDto> createOperation(@Validated @RequestBody OperationRequest request) {
         return success(facade.createOperation(request));

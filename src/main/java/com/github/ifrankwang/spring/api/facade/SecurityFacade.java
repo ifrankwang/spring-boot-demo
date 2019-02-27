@@ -7,10 +7,19 @@ import com.github.ifrankwang.spring.api.dto.modules.security.SingleResourceReque
 import com.github.ifrankwang.spring.module.security.exception.OperationExistedException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
 public interface SecurityFacade {
+
+    /**
+     * 获取模块可执行的操作
+     *
+     * @return 操作列表
+     */
+    List<OperationDto> getOperationList();
 
     /**
      * 创建模块可执行的操作

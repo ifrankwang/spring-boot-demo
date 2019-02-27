@@ -9,6 +9,8 @@ import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
@@ -25,4 +27,6 @@ public interface ResourceMapper {
     OperationEntity toOperationEntity(OperationRequest dto);
 
     OperationDto fromOperationEntity(OperationEntity entity);
+
+    List<OperationDto> fromOperationEntities(List<OperationEntity> entity);
 }
