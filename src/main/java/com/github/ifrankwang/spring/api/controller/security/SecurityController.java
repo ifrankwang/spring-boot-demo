@@ -23,7 +23,7 @@ import static com.github.ifrankwang.spring.module.security.properties.SecurityCo
  */
 @Api(tags = {TAG_SECURITY})
 @RestController
-@RequestMapping(API_PREFIX + "security")
+@RequestMapping(API_PREFIX + "/security")
 @Transactional(rollbackFor = Exception.class)
 public class SecurityController {
     private final SecurityFacade facade;
