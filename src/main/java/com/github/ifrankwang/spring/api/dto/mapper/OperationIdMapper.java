@@ -1,6 +1,7 @@
 package com.github.ifrankwang.spring.api.dto.mapper;
 
 import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
+import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
 import com.github.ifrankwang.spring.module.security.repo.OperationRepo;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class OperationIdMapper {
         this.repo = repo;
     }
 
-    public OperationEntity idToEntity(Long id) {
+    public OperationEntity idToEntity(Long id) throws OperationNotFoundException {
         return null == id ? null : repo.findById(id).orElse(null);
     }
 

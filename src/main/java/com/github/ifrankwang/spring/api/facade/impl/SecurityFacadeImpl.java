@@ -9,6 +9,7 @@ import com.github.ifrankwang.spring.api.facade.SecurityFacade;
 import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import com.github.ifrankwang.spring.module.security.exception.OperationExistedException;
+import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
 import com.github.ifrankwang.spring.module.security.service.OperationService;
 import com.github.ifrankwang.spring.module.security.service.ResourceService;
@@ -46,7 +47,14 @@ public class SecurityFacadeImpl implements SecurityFacade {
     }
 
     @Override
-    public ResourceDto createResource(SingleResourceRequest request) throws ResourceExistedException {
+    public OperationDto updateOperation(Long id, OperationRequest request) throws OperationExistedException {
+        OperationEntity updateEntity = resourceMapper.toOperationEntity(request, id);
+        updateEntity = operationService.update(updateEntity);
+        return resourceMapper.fromOperationEntity(updateEntity);
+    }
+
+    @Override
+    public ResourceDto createResource(SingleResourceRequest request) throws OperationNotFoundException, ResourceExistedException {
         ResourceEntity resourceEntity = resourceMapper.toResourceEntity(request);
         resourceEntity = resourceService.create(resourceEntity);
         return resourceMapper.fromResourceEntity(resourceEntity);

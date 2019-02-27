@@ -6,6 +6,7 @@ import com.github.ifrankwang.spring.api.dto.modules.security.ResourceDto;
 import com.github.ifrankwang.spring.api.dto.modules.security.SingleResourceRequest;
 import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
+import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -18,13 +19,15 @@ import java.util.List;
 public interface ResourceMapper {
 
     @Mapping(target = "parent", source = "parentId")
-    ResourceEntity toResourceEntity(SingleResourceRequest request);
+    ResourceEntity toResourceEntity(SingleResourceRequest request) throws OperationNotFoundException;
 
     @Mapping(target = "parentId", source = "parent")
     ResourceDto fromResourceEntity(ResourceEntity resource);
 
     @Mapping(target = "id", ignore = true)
     OperationEntity toOperationEntity(OperationRequest dto);
+
+    OperationEntity toOperationEntity(OperationRequest dto, Long id);
 
     OperationDto fromOperationEntity(OperationEntity entity);
 

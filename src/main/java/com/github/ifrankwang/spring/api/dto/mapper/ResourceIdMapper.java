@@ -1,6 +1,7 @@
 package com.github.ifrankwang.spring.api.dto.mapper;
 
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
+import com.github.ifrankwang.spring.module.security.exception.ResourceNotFoundException;
 import com.github.ifrankwang.spring.module.security.repo.ResourceRepo;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class ResourceIdMapper {
         this.repo = repo;
     }
 
-    ResourceEntity idToEntity(Long id) {
+    ResourceEntity idToEntity(Long id) throws ResourceNotFoundException {
         return null == id ? null : repo.findById(id).orElse(null);
     }
 
