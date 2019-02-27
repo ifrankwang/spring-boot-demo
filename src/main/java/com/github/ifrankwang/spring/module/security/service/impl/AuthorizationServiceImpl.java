@@ -1,11 +1,12 @@
 package com.github.ifrankwang.spring.module.security.service.impl;
 
-import com.github.ifrankwang.spring.api.dto.security.RequestToken;
+import com.github.ifrankwang.spring.api.dto.modules.security.RequestToken;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
-import com.github.ifrankwang.spring.module.security.factory.UserFactory;
 import com.github.ifrankwang.spring.module.security.properties.SecurityConst;
+import com.github.ifrankwang.spring.module.security.query.AuthorityQuery;
+import com.github.ifrankwang.spring.module.security.repo.UserRepo;
 import com.github.ifrankwang.spring.module.security.service.AuthorizationService;
 import com.github.ifrankwang.spring.module.security.service.TokenService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,24 +19,26 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.github.ifrankwang.spring.api.dto.security.RequestToken.from;
+import static com.github.ifrankwang.spring.api.dto.modules.security.RequestToken.from;
 
 /**
  * @author Frank Wang
  */
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-    private final UserFactory userFactory;
     private final TokenService tokenService;
+    private final UserRepo userRepo;
+    private final AuthorityQuery query;
 
-    public AuthorizationServiceImpl(UserFactory userFactory, TokenService tokenService) {
-        this.userFactory = userFactory;
+    public AuthorizationServiceImpl(TokenService tokenService, UserRepo userRepo, AuthorityQuery query) {
         this.tokenService = tokenService;
+        this.userRepo = userRepo;
+        this.query = query;
     }
 
     @Override
     public void authRequest(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws IOException, ServletException, InsufficientPermissionException {
+            throws IOException, ServletException, UserNotFoundException, InsufficientPermissionException {
         final String uri = request.getRequestURI();
         final RequestToken requestToken = from(request.getHeader(SecurityConst.HEADER_NAME));
 
@@ -51,13 +54,10 @@ public class AuthorizationServiceImpl implements AuthorizationService {
     }
 
     private UsernamePasswordAuthenticationToken getAuthTokenFromRequestToken(RequestToken requestToken)
-            throws InsufficientPermissionException {
-        try {
-            final String email = tokenService.getSubjectFrom(requestToken.getTokenValue());
-            final UserEntity user = userFactory.getByEmail(email);
-            return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), user.getAuthorities());
-        } catch (UserNotFoundException e) {
-            throw new InsufficientPermissionException();
-        }
+            throws UserNotFoundException {
+        final String email = tokenService.getSubjectFrom(requestToken.getTokenValue());
+        final UserEntity user = userRepo.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(),
+                                                       query.findAllByUser(user));
     }
 }

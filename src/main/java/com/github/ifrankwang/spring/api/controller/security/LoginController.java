@@ -1,13 +1,16 @@
 package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
-import com.github.ifrankwang.spring.api.dto.security.LoginInfo;
+import com.github.ifrankwang.spring.api.dto.modules.security.LoginInfo;
 import com.github.ifrankwang.spring.api.facade.LoginFacade;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
+import com.github.ifrankwang.spring.module.security.exception.InvalidUsernameOrPasswordException;
+import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
 import com.github.ifrankwang.spring.module.security.properties.SecurityConst;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +47,10 @@ public class LoginController {
     @RequestMapping(SecurityConst.AUTH_FAILED_URL)
     public AppResponse<String> errorOccur() {
         return failed(new InsufficientPermissionException().getMessage());
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<AppResponse> handleUserNotFoundException(UserNotFoundException e) {
+        return ResponseEntity.ok(failed(new InvalidUsernameOrPasswordException()));
     }
 }

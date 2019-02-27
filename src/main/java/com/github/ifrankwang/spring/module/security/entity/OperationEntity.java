@@ -16,7 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class OperationEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     private String tag;
 }

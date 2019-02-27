@@ -1,4 +1,4 @@
-package com.github.ifrankwang.spring.api.dto.security;
+package com.github.ifrankwang.spring.api.dto.modules.security;
 
 import com.github.ifrankwang.spring.module.security.properties.SecurityConst;
 import lombok.Data;

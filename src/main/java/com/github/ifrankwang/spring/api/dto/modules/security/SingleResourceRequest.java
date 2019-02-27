@@ -1,9 +1,10 @@
-package com.github.ifrankwang.spring.api.dto.security;
+package com.github.ifrankwang.spring.api.dto.modules.security;
 
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,5 +18,5 @@ public class SingleResourceRequest {
     private String tag;
     private Long parentId;
     @Valid
-    private List<OperationRequest> operations;
+    private List<Long> operations = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.github.ifrankwang.spring.api.dto;
 
+import com.github.ifrankwang.spring.exception.ServiceException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -34,5 +35,9 @@ public class AppResponse<T> {
 
     public static <T> AppResponse<T> failed(String message) {
         return new AppResponse<>(false, message, null);
+    }
+
+    public static <T> AppResponse<T> failed(ServiceException e) {
+        return new AppResponse<>(false, e.getMessage(), null);
     }
 }
