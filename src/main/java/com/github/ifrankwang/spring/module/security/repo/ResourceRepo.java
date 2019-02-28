@@ -1,6 +1,7 @@
 package com.github.ifrankwang.spring.module.security.repo;
 
 import com.github.ifrankwang.spring.interfaces.Repository;
+import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 
 /**
@@ -14,4 +15,12 @@ public interface ResourceRepo extends Repository<ResourceEntity, Long> {
      * @return 是否存在
      */
     boolean existsByTag(String tag);
+
+    /**
+     * 判断是否存在占用操作的资源
+     *
+     * @param operation 操作
+     * @return 是否存在
+     */
+    boolean existsByOperationsContains(OperationEntity operation);
 }

@@ -3,6 +3,7 @@ package com.github.ifrankwang.spring.module.security.service;
 import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.exception.OperationExistedException;
 import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
+import com.github.ifrankwang.spring.module.security.exception.OperationOccupiedException;
 
 import java.util.List;
 
@@ -35,4 +36,13 @@ public interface OperationService {
      * @throws OperationExistedException  同标签名操作已存在
      */
     OperationEntity update(OperationEntity entity) throws OperationNotFoundException, OperationExistedException;
+
+    /**
+     * 删除模块可执行的操作
+     *
+     * @param id 模块id
+     * @throws OperationNotFoundException 操作不存在
+     * @throws OperationOccupiedException 操作被占用
+     */
+    void delete(Long id) throws OperationNotFoundException, OperationOccupiedException;
 }

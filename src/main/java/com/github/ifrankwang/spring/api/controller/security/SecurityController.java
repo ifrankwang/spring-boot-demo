@@ -50,6 +50,13 @@ public class SecurityController {
         return success(facade.updateOperation(id, request));
     }
 
+    @ApiOperation(value = "删除模块可执行的操作", tags = TAG_OPERATION)
+    @DeleteMapping("/operation/{id}")
+    public AppResponse deleteOperation(@PathVariable Long id) {
+        facade.deleteOperation(id);
+        return success();
+    }
+
     @ApiOperation(value = "创建一个新的资源/模块", tags = TAG_RESOURCE)
     @PostMapping("/resource")
     public AppResponse<ResourceDto> createResource(@Validated @RequestBody SingleResourceRequest request) {

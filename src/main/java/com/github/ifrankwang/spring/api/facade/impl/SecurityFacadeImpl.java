@@ -10,6 +10,7 @@ import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import com.github.ifrankwang.spring.module.security.exception.OperationExistedException;
 import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
+import com.github.ifrankwang.spring.module.security.exception.OperationOccupiedException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
 import com.github.ifrankwang.spring.module.security.service.OperationService;
 import com.github.ifrankwang.spring.module.security.service.ResourceService;
@@ -51,6 +52,11 @@ public class SecurityFacadeImpl implements SecurityFacade {
         OperationEntity updateEntity = resourceMapper.toOperationEntity(request, id);
         updateEntity = operationService.update(updateEntity);
         return resourceMapper.fromOperationEntity(updateEntity);
+    }
+
+    @Override
+    public void deleteOperation(Long id) throws OperationNotFoundException, OperationOccupiedException {
+        operationService.delete(id);
     }
 
     @Override
