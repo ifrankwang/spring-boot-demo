@@ -60,6 +60,12 @@ public class SecurityFacadeImpl implements SecurityFacade {
     }
 
     @Override
+    public List<ResourceDto> getResourceList() {
+        final List<ResourceEntity> resourceEntities = resourceService.getAllAsContracted();
+        return resourceMapper.fromResourceEntities(resourceEntities);
+    }
+
+    @Override
     public ResourceDto createResource(SingleResourceRequest request) throws OperationNotFoundException, ResourceExistedException {
         ResourceEntity resourceEntity = resourceMapper.toResourceEntity(request);
         resourceEntity = resourceService.create(resourceEntity);

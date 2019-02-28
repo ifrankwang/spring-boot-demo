@@ -52,6 +52,13 @@ public interface SecurityFacade {
     void deleteOperation(Long id) throws OperationNotFoundException, OperationOccupiedException;
 
     /**
+     * 获取结构化的模块列表
+     *
+     * @return 结构化的模块列表
+     */
+    List<ResourceDto> getResourceList();
+
+    /**
      * 创建一个新的资源/模块
      *
      * @param request 请求体

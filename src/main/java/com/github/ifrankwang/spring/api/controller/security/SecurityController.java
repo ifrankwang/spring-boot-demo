@@ -57,6 +57,12 @@ public class SecurityController {
         return success();
     }
 
+    @ApiOperation(value = "获取全部模块列表", tags = TAG_RESOURCE)
+    @GetMapping("/resource/list")
+    public AppResponse<List<ResourceDto>> getResourceList() {
+        return success(facade.getResourceList());
+    }
+
     @ApiOperation(value = "创建一个新的资源/模块", tags = TAG_RESOURCE)
     @PostMapping("/resource")
     public AppResponse<ResourceDto> createResource(@Validated @RequestBody SingleResourceRequest request) {

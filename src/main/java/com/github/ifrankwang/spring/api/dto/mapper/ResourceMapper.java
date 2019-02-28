@@ -24,6 +24,8 @@ public interface ResourceMapper {
     @Mapping(target = "parentId", source = "parent")
     ResourceDto fromResourceEntity(ResourceEntity resource);
 
+    List<ResourceDto> fromResourceEntities(List<ResourceEntity> resources);
+
     @Mapping(target = "id", ignore = true)
     OperationEntity toOperationEntity(OperationRequest dto);
 

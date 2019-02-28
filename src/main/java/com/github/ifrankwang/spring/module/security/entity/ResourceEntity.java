@@ -39,6 +39,8 @@ public class ResourceEntity {
     private List<OperationEntity> operations = new ArrayList<>();
 
     @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true)
+    @JoinTable(name = "resource", joinColumns = @JoinColumn(name = "parent_id"),
+               inverseJoinColumns = @JoinColumn(name = "id"))
     private List<ResourceEntity> children = new ArrayList<>();
 
     public ResourceEntity(Long id) {

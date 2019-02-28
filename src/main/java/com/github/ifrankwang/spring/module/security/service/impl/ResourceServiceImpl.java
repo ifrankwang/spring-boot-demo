@@ -7,6 +7,8 @@ import com.github.ifrankwang.spring.module.security.service.ResourceService;
 import com.github.ifrankwang.utils.misc.Checkable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
@@ -16,6 +18,11 @@ public class ResourceServiceImpl implements ResourceService {
 
     public ResourceServiceImpl(ResourceRepo repo) {
         this.repo = repo;
+    }
+
+    @Override
+    public List<ResourceEntity> getAllAsContracted() {
+        return repo.findAllByParentIsNull();
     }
 
     @Override
