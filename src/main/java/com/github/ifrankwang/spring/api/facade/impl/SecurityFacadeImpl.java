@@ -8,10 +8,7 @@ import com.github.ifrankwang.spring.api.dto.modules.security.SingleResourceReque
 import com.github.ifrankwang.spring.api.facade.SecurityFacade;
 import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
-import com.github.ifrankwang.spring.module.security.exception.OperationExistedException;
-import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
-import com.github.ifrankwang.spring.module.security.exception.OperationOccupiedException;
-import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
+import com.github.ifrankwang.spring.module.security.exception.*;
 import com.github.ifrankwang.spring.module.security.service.OperationService;
 import com.github.ifrankwang.spring.module.security.service.ResourceService;
 import org.springframework.stereotype.Service;
@@ -69,6 +66,13 @@ public class SecurityFacadeImpl implements SecurityFacade {
     public ResourceDto createResource(SingleResourceRequest request) throws OperationNotFoundException, ResourceExistedException {
         ResourceEntity resourceEntity = resourceMapper.toResourceEntity(request);
         resourceEntity = resourceService.create(resourceEntity);
+        return resourceMapper.fromResourceEntity(resourceEntity);
+    }
+
+    @Override
+    public ResourceDto updateResource(Long id, SingleResourceRequest request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException {
+        ResourceEntity resourceEntity = resourceMapper.toResourceEntity(request, id);
+        resourceService.update(resourceEntity);
         return resourceMapper.fromResourceEntity(resourceEntity);
     }
 }

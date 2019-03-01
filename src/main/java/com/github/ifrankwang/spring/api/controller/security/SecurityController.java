@@ -68,4 +68,10 @@ public class SecurityController {
     public AppResponse<ResourceDto> createResource(@Validated @RequestBody SingleResourceRequest request) {
         return success(facade.createResource(request));
     }
+
+    @ApiOperation(value = "更新模块信息", tags = TAG_RESOURCE)
+    @PutMapping("/resource/{id}")
+    public AppResponse<ResourceDto> updateResource(@PathVariable Long id, @Validated @RequestBody SingleResourceRequest resourceRequest) {
+        return success(facade.updateResource(id, resourceRequest));
+    }
 }

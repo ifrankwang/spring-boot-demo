@@ -4,10 +4,7 @@ import com.github.ifrankwang.spring.api.dto.modules.security.OperationDto;
 import com.github.ifrankwang.spring.api.dto.modules.security.OperationRequest;
 import com.github.ifrankwang.spring.api.dto.modules.security.ResourceDto;
 import com.github.ifrankwang.spring.api.dto.modules.security.SingleResourceRequest;
-import com.github.ifrankwang.spring.module.security.exception.OperationExistedException;
-import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
-import com.github.ifrankwang.spring.module.security.exception.OperationOccupiedException;
-import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
+import com.github.ifrankwang.spring.module.security.exception.*;
 
 import java.util.List;
 
@@ -67,4 +64,16 @@ public interface SecurityFacade {
      * @throws ResourceExistedException 同标签名模块已存在
      */
     ResourceDto createResource(SingleResourceRequest request) throws OperationNotFoundException, ResourceExistedException;
+
+    /**
+     * 更新模块信息
+     *
+     * @param id      模块id
+     * @param request 请求体
+     * @return 更新后的模块信息
+     * @throws ResourceNotFoundException  模块不存在
+     * @throws OperationNotFoundException 操作不存在
+     * @throws ResourceExistedException   同标签名模块已存在
+     */
+    ResourceDto updateResource(Long id, SingleResourceRequest request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException;
 }

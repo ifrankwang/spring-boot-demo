@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.module.security.service;
 
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
+import com.github.ifrankwang.spring.module.security.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -25,4 +26,13 @@ public interface ResourceService {
      * @throws ResourceExistedException 同标签名模块已存在
      */
     ResourceEntity create(ResourceEntity resource) throws ResourceExistedException;
+
+    /**
+     * 更新模块
+     *
+     * @param resource 模块对象
+     * @return 更新后的模块对象
+     * @throws ResourceExistedException 同标签名模块已存在
+     */
+    ResourceEntity update(ResourceEntity resource) throws ResourceNotFoundException, ResourceExistedException;
 }

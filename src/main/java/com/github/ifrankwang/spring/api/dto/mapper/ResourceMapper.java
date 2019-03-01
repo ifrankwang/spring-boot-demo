@@ -21,6 +21,9 @@ public interface ResourceMapper {
     @Mapping(target = "parent", source = "parentId")
     ResourceEntity toResourceEntity(SingleResourceRequest request) throws OperationNotFoundException;
 
+    @Mapping(target = "parent", source = "request.parentId")
+    ResourceEntity toResourceEntity(SingleResourceRequest request, Long id) throws OperationNotFoundException;
+
     @Mapping(target = "parentId", source = "parent")
     ResourceDto fromResourceEntity(ResourceEntity resource);
 
