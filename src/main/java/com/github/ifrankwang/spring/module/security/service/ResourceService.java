@@ -32,7 +32,16 @@ public interface ResourceService {
      *
      * @param resource 模块对象
      * @return 更新后的模块对象
+     * @throws ResourceNotFoundException 模块不存在
      * @throws ResourceExistedException 同标签名模块已存在
      */
     ResourceEntity update(ResourceEntity resource) throws ResourceNotFoundException, ResourceExistedException;
+
+    /**
+     * 删除模块
+     *
+     * @param id 模块id
+     * @throws ResourceNotFoundException 模块不存在
+     */
+    void delete(Long id) throws ResourceNotFoundException;
 }

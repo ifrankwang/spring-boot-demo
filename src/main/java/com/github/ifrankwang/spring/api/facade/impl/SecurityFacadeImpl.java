@@ -75,4 +75,9 @@ public class SecurityFacadeImpl implements SecurityFacade {
         resourceService.update(resourceEntity);
         return resourceMapper.fromResourceEntity(resourceEntity);
     }
+
+    @Override
+    public void deleteResource(Long id) throws ResourceNotFoundException {
+        resourceService.delete(id);
+    }
 }

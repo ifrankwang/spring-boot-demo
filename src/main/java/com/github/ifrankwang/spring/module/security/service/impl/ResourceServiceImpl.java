@@ -42,4 +42,10 @@ public class ResourceServiceImpl implements ResourceService {
         }
         return ResourceMapper.INSTANCE.update(originalOne, resource);
     }
+
+    @Override
+    public void delete(Long id) throws ResourceNotFoundException {
+        final ResourceEntity resourceEntity = repo.findById(id).orElseThrow(ResourceNotFoundException::new);
+        repo.delete(resourceEntity);
+    }
 }

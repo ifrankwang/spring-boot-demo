@@ -76,4 +76,12 @@ public interface SecurityFacade {
      * @throws ResourceExistedException   同标签名模块已存在
      */
     ResourceDto updateResource(Long id, SingleResourceRequest request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException;
+
+    /**
+     * 删除模块
+     *
+     * @param id 模块id
+     * @throws ResourceNotFoundException 模块不存在
+     */
+    void deleteResource(Long id) throws ResourceNotFoundException;
 }

@@ -74,4 +74,11 @@ public class SecurityController {
     public AppResponse<ResourceDto> updateResource(@PathVariable Long id, @Validated @RequestBody SingleResourceRequest resourceRequest) {
         return success(facade.updateResource(id, resourceRequest));
     }
+
+    @ApiOperation(value = "删除模块", tags = TAG_RESOURCE)
+    @DeleteMapping("/resource/{id}")
+    public AppResponse deleteResource(@PathVariable Long id) {
+        facade.deleteResource(id);
+        return success();
+    }
 }

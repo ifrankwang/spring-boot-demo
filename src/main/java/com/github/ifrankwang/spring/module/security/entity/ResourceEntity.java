@@ -34,13 +34,11 @@ public class ResourceEntity {
     @ManyToOne(cascade = REFRESH)
     private ResourceEntity parent;
 
-    @OneToMany(cascade = {PERSIST, REFRESH})
+    @OneToMany(cascade = REFRESH)
     @JoinTable(name = "resource_operation", inverseJoinColumns = @JoinColumn(name = "operation_id"))
     private List<OperationEntity> operations = new ArrayList<>();
 
-    @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true)
-    @JoinTable(name = "resource", joinColumns = @JoinColumn(name = "parent_id"),
-               inverseJoinColumns = @JoinColumn(name = "id"))
+    @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true, mappedBy = "parent")
     private List<ResourceEntity> children = new ArrayList<>();
 
     public ResourceEntity(Long id) {
