@@ -1,5 +1,6 @@
 package com.github.ifrankwang.spring.api.dto.security;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,5 @@ public class OperationRequest {
     private String name;
     @NotBlank
     private String tag;
+    private AccessLevel accessLevel;
 }

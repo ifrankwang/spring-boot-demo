@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
+import static java.time.LocalDateTime.now;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -20,7 +21,7 @@ public class AuthorityEntity implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private LocalDateTime createTime;
+    private LocalDateTime createTime = now();
 
     @ManyToOne
     private ResourceEntity resource;
@@ -30,6 +31,6 @@ public class AuthorityEntity implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return String.format("%s-%s:%s", resource.getId(), resource.getTag(), operation.getTag());
+        return String.format("%s:%s:%s", resource.getTag(), operation.getTag(), operation.getAccessLevel());
     }
 }

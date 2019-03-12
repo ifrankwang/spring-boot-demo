@@ -20,6 +20,7 @@ public class RoleEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
+    private Boolean generic = false;
     private LocalDateTime createTime = now();
 
     @OneToMany
