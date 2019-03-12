@@ -1,6 +1,6 @@
 package com.github.ifrankwang.spring.api.facade;
 
-import com.github.ifrankwang.spring.api.dto.modules.security.LoginInfo;
+import com.github.ifrankwang.spring.api.dto.security.LoginInfo;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.exception.InvalidUsernameOrPasswordException;
 import com.github.ifrankwang.spring.module.security.exception.LoginInfoExpiredException;

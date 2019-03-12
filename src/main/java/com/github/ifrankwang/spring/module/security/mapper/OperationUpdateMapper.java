@@ -9,8 +9,8 @@ import org.mapstruct.factory.Mappers;
  * @author Frank Wang
  */
 @Mapper
-public interface OperationMapper {
-    OperationMapper INSTANCE = Mappers.getMapper(OperationMapper.class);
+public interface OperationUpdateMapper {
+    OperationUpdateMapper INSTANCE = Mappers.getMapper(OperationUpdateMapper.class);
 
     OperationEntity update(@MappingTarget OperationEntity dest, OperationEntity source);
 }

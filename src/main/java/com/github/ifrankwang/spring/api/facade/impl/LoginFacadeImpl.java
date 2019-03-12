@@ -1,6 +1,6 @@
 package com.github.ifrankwang.spring.api.facade.impl;
 
-import com.github.ifrankwang.spring.api.dto.modules.security.LoginInfo;
+import com.github.ifrankwang.spring.api.dto.security.LoginInfo;
 import com.github.ifrankwang.spring.api.facade.LoginFacade;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;

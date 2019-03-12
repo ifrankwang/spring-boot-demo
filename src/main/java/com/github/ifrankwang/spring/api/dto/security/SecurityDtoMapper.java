@@ -1,12 +1,10 @@
-package com.github.ifrankwang.spring.api.dto.mapper;
+package com.github.ifrankwang.spring.api.dto.security;
 
-import com.github.ifrankwang.spring.api.dto.modules.security.OperationDto;
-import com.github.ifrankwang.spring.api.dto.modules.security.OperationRequest;
-import com.github.ifrankwang.spring.api.dto.modules.security.ResourceDto;
-import com.github.ifrankwang.spring.api.dto.modules.security.SingleResourceRequest;
 import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
+import com.github.ifrankwang.spring.module.security.mapper.OperationIdMapper;
+import com.github.ifrankwang.spring.module.security.mapper.ResourceIdMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,7 +14,7 @@ import java.util.List;
  * @author Frank Wang
  */
 @Mapper(componentModel = "spring", uses = {ResourceIdMapper.class, OperationIdMapper.class})
-public interface ResourceMapper {
+public interface SecurityDtoMapper {
 
     @Mapping(target = "parent", source = "parentId")
     ResourceEntity toResourceEntity(SingleResourceRequest request) throws OperationNotFoundException;

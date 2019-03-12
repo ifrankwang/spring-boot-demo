@@ -1,6 +1,6 @@
 package com.github.ifrankwang.spring.module.security.service.impl;
 
-import com.github.ifrankwang.spring.api.dto.modules.security.RequestToken;
+import com.github.ifrankwang.spring.api.dto.security.RequestToken;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.github.ifrankwang.spring.api.dto.modules.security.RequestToken.from;
+import static com.github.ifrankwang.spring.api.dto.security.RequestToken.from;
 
 /**
  * @author Frank Wang

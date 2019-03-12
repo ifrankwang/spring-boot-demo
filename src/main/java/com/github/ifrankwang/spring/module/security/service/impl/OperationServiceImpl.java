@@ -4,7 +4,7 @@ import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.exception.OperationExistedException;
 import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
 import com.github.ifrankwang.spring.module.security.exception.OperationOccupiedException;
-import com.github.ifrankwang.spring.module.security.mapper.OperationMapper;
+import com.github.ifrankwang.spring.module.security.mapper.OperationUpdateMapper;
 import com.github.ifrankwang.spring.module.security.repo.OperationRepo;
 import com.github.ifrankwang.spring.module.security.repo.ResourceRepo;
 import com.github.ifrankwang.spring.module.security.service.OperationService;
@@ -44,7 +44,7 @@ public class OperationServiceImpl implements OperationService {
         if (!StringUtils.equals(originalOne.getTag(), entity.getTag())) {
             Checkable.of(repo.existsByTag(entity.getTag())).ifTrueThrow(OperationExistedException::new);
         }
-        OperationMapper.INSTANCE.update(originalOne, entity);
+        OperationUpdateMapper.INSTANCE.update(originalOne, entity);
         return originalOne;
     }
 

@@ -1,4 +1,4 @@
-package com.github.ifrankwang.spring.api.dto.modules.security;
+package com.github.ifrankwang.spring.api.dto.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

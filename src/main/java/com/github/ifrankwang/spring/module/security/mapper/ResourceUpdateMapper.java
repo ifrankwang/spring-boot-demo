@@ -10,8 +10,8 @@ import org.mapstruct.factory.Mappers;
  * @author Frank Wang
  */
 @Mapper
-public interface ResourceMapper {
-    ResourceMapper INSTANCE = Mappers.getMapper(ResourceMapper.class);
+public interface ResourceUpdateMapper {
+    ResourceUpdateMapper INSTANCE = Mappers.getMapper(ResourceUpdateMapper.class);
 
     @Mapping(target = "children", ignore = true)
     @Mapping(target = "createTime", ignore = true)

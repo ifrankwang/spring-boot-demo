@@ -3,7 +3,7 @@ package com.github.ifrankwang.spring.module.security.service.impl;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceNotFoundException;
-import com.github.ifrankwang.spring.module.security.mapper.ResourceMapper;
+import com.github.ifrankwang.spring.module.security.mapper.ResourceUpdateMapper;
 import com.github.ifrankwang.spring.module.security.repo.ResourceRepo;
 import com.github.ifrankwang.spring.module.security.service.ResourceService;
 import com.github.ifrankwang.utils.misc.Checkable;
@@ -40,7 +40,7 @@ public class ResourceServiceImpl implements ResourceService {
         if (!StringUtils.equals(originalOne.getTag(), resource.getTag())) {
             Checkable.of(repo.existsByTag(resource.getTag())).ifTrueThrow(ResourceExistedException::new);
         }
-        return ResourceMapper.INSTANCE.update(originalOne, resource);
+        return ResourceUpdateMapper.INSTANCE.update(originalOne, resource);
     }
 
     @Override

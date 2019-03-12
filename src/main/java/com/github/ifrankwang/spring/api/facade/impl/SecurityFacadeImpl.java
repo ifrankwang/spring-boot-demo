@@ -1,10 +1,6 @@
 package com.github.ifrankwang.spring.api.facade.impl;
 
-import com.github.ifrankwang.spring.api.dto.mapper.ResourceMapper;
-import com.github.ifrankwang.spring.api.dto.modules.security.OperationDto;
-import com.github.ifrankwang.spring.api.dto.modules.security.OperationRequest;
-import com.github.ifrankwang.spring.api.dto.modules.security.ResourceDto;
-import com.github.ifrankwang.spring.api.dto.modules.security.SingleResourceRequest;
+import com.github.ifrankwang.spring.api.dto.security.*;
 import com.github.ifrankwang.spring.api.facade.SecurityFacade;
 import com.github.ifrankwang.spring.module.security.entity.OperationEntity;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
@@ -23,32 +19,32 @@ public class SecurityFacadeImpl implements SecurityFacade {
     private final ResourceService resourceService;
     private final OperationService operationService;
 
-    private final ResourceMapper resourceMapper;
+    private final SecurityDtoMapper securityDtoMapper;
 
-    public SecurityFacadeImpl(ResourceService resourceService, OperationService operationService, ResourceMapper resourceMapper) {
+    public SecurityFacadeImpl(ResourceService resourceService, OperationService operationService, SecurityDtoMapper securityDtoMapper) {
         this.resourceService = resourceService;
         this.operationService = operationService;
-        this.resourceMapper = resourceMapper;
+        this.securityDtoMapper = securityDtoMapper;
     }
 
     @Override
     public List<OperationDto> getOperationList() {
         final List<OperationEntity> operationEntities = operationService.getAll();
-        return resourceMapper.fromOperationEntities(operationEntities);
+        return securityDtoMapper.fromOperationEntities(operationEntities);
     }
 
     @Override
     public OperationDto createOperation(OperationRequest request) throws OperationExistedException {
-        OperationEntity operationEntity = resourceMapper.toOperationEntity(request);
+        OperationEntity operationEntity = securityDtoMapper.toOperationEntity(request);
         operationEntity = operationService.create(operationEntity);
-        return resourceMapper.fromOperationEntity(operationEntity);
+        return securityDtoMapper.fromOperationEntity(operationEntity);
     }
 
     @Override
     public OperationDto updateOperation(Long id, OperationRequest request) throws OperationExistedException {
-        OperationEntity updateEntity = resourceMapper.toOperationEntity(request, id);
+        OperationEntity updateEntity = securityDtoMapper.toOperationEntity(request, id);
         updateEntity = operationService.update(updateEntity);
-        return resourceMapper.fromOperationEntity(updateEntity);
+        return securityDtoMapper.fromOperationEntity(updateEntity);
     }
 
     @Override
@@ -59,21 +55,21 @@ public class SecurityFacadeImpl implements SecurityFacade {
     @Override
     public List<ResourceDto> getResourceList() {
         final List<ResourceEntity> resourceEntities = resourceService.getAllAsContracted();
-        return resourceMapper.fromResourceEntities(resourceEntities);
+        return securityDtoMapper.fromResourceEntities(resourceEntities);
     }
 
     @Override
     public ResourceDto createResource(SingleResourceRequest request) throws OperationNotFoundException, ResourceExistedException {
-        ResourceEntity resourceEntity = resourceMapper.toResourceEntity(request);
+        ResourceEntity resourceEntity = securityDtoMapper.toResourceEntity(request);
         resourceEntity = resourceService.create(resourceEntity);
-        return resourceMapper.fromResourceEntity(resourceEntity);
+        return securityDtoMapper.fromResourceEntity(resourceEntity);
     }
 
     @Override
     public ResourceDto updateResource(Long id, SingleResourceRequest request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException {
-        ResourceEntity resourceEntity = resourceMapper.toResourceEntity(request, id);
+        ResourceEntity resourceEntity = securityDtoMapper.toResourceEntity(request, id);
         resourceService.update(resourceEntity);
-        return resourceMapper.fromResourceEntity(resourceEntity);
+        return securityDtoMapper.fromResourceEntity(resourceEntity);
     }
 
     @Override
