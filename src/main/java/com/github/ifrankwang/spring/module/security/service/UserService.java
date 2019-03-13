@@ -3,6 +3,8 @@ package com.github.ifrankwang.spring.module.security.service;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
@@ -15,4 +17,11 @@ public interface UserService {
      * @throws UserNotFoundException 没有找到用户
      */
     UserEntity findByEmail(String email) throws UserNotFoundException;
+
+    /**
+     * 获取所有用户
+     *
+     * @return 所有用户
+     */
+    List<UserEntity> findAll();
 }

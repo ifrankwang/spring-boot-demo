@@ -6,6 +6,8 @@ import com.github.ifrankwang.spring.module.security.repo.UserRepo;
 import com.github.ifrankwang.spring.module.security.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
@@ -20,5 +22,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity findByEmail(String email) throws UserNotFoundException {
         return repo.findByEmail(email).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public List<UserEntity> findAll() {
+        return repo.findAll();
     }
 }
