@@ -1,15 +1,13 @@
 package com.github.ifrankwang.spring.module.security.entity;
 
+import com.github.ifrankwang.spring.module.security.enums.Operations;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -17,20 +15,14 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Data
 @Entity(name = "authority")
-public class AuthorityEntity implements GrantedAuthority {
+public class AuthorityEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private LocalDateTime createTime = now();
+    @Enumerated(STRING)
+    private Operations operation;
 
     @ManyToOne
     private ResourceEntity resource;
-
-    @ManyToOne
-    private OperationEntity operation;
-
-    @Override
-    public String getAuthority() {
-        return String.format("%s:%s:%s", resource.getTag(), operation.getTag(), operation.getAccessLevel());
-    }
 }

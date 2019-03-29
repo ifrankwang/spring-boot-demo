@@ -154,7 +154,7 @@
         <dependency>
             <groupId>com.github.ifrankwang</groupId>
             <artifactId>project-utils</artifactId>
-            <version>1.1</version>
+            <version>1.3</version>
         </dependency>
 
         <dependency>

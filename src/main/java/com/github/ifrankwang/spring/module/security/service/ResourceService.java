@@ -12,6 +12,15 @@ import java.util.List;
 public interface ResourceService {
 
     /**
+     * 获取指定模块
+     *
+     * @param id 模块id
+     * @return 指定模块
+     * @throws ResourceNotFoundException 模块未找到
+     */
+    ResourceEntity findById(Long id) throws ResourceNotFoundException;
+
+    /**
      * 获取结构化的模块列表
      *
      * @return 结构化的模块列表

@@ -3,5 +3,5 @@ package com.github.ifrankwang.spring.module.security.query;
 /**
  * @author Frank Wang
  */
-public interface AuthorityQuery {
+public interface GroupQuery {
 }

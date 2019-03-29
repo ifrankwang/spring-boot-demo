@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserEntity findById(Long id) throws UserNotFoundException {
+        return repo.findById(id).orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
     public List<UserEntity> findAll() {
         return repo.findAll();
     }

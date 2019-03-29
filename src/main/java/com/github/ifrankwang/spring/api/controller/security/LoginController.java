@@ -15,13 +15,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_LOGIN;
+import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_SECURITY;
 import static com.github.ifrankwang.spring.api.dto.AppResponse.failed;
 import static com.github.ifrankwang.spring.api.dto.AppResponse.success;
 
 /**
  * @author Frank Wang
  */
-@Api(tags = TAG_LOGIN)
+@Api(tags = {TAG_LOGIN, TAG_SECURITY})
 @RestController
 public class LoginController {
     private final LoginFacade loginFacade;

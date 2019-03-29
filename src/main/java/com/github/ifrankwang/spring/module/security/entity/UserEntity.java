@@ -1,13 +1,13 @@
 package com.github.ifrankwang.spring.module.security.entity;
 
-import com.github.ifrankwang.spring.module.security.query.AuthorityQuery;
 import com.github.ifrankwang.utils.password.PasswordHolder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static javax.persistence.GenerationType.IDENTITY;
@@ -16,6 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  * @author Frank Wang
  */
 @Data
+@EqualsAndHashCode(of = "id")
 @Entity(name = "user")
 public class UserEntity implements PasswordHolder {
     @Id
@@ -26,15 +27,4 @@ public class UserEntity implements PasswordHolder {
     private String password;
     private LocalDateTime createTime = now();
     private Boolean enabled = true;
-
-    @OneToMany
-    @JoinTable(name = "user_role", inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private List<RoleEntity> roles = new ArrayList<>();
-
-    @Transient
-    private AuthorityQuery authorityQuery;
-
-    public List<AuthorityEntity> getAuthorities() {
-        return authorityQuery.findAllByUser(this);
-    }
 }

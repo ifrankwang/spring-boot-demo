@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.github.ifrankwang.spring.api.dto.security.RequestToken.from;
+import static java.util.Collections.emptyList;
 
 /**
  * @author Frank Wang
@@ -57,7 +58,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             throws UserNotFoundException {
         final String email = tokenService.getSubjectFrom(requestToken.getTokenValue());
         final UserEntity user = userRepo.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(),
-                                                       query.findAllByUser(user));
+        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), emptyList());
     }
 }

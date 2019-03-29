@@ -30,18 +30,11 @@ public class ResourceEntity {
     private String name;
     private String tag;
     private LocalDateTime createTime = now();
+    private String availableOperations;
 
     @ManyToOne(cascade = REFRESH)
     private ResourceEntity parent;
 
-    @OneToMany(cascade = REFRESH)
-    @JoinTable(name = "resource_operation", inverseJoinColumns = @JoinColumn(name = "operation_id"))
-    private List<OperationEntity> operations = new ArrayList<>();
-
     @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true, mappedBy = "parent")
     private List<ResourceEntity> children = new ArrayList<>();
-
-    public ResourceEntity(Long id) {
-        this.id = id;
-    }
 }

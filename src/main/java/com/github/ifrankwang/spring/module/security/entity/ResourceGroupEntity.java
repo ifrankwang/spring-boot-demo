@@ -1,6 +1,8 @@
 package com.github.ifrankwang.spring.module.security.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,15 +15,17 @@ import static javax.persistence.GenerationType.IDENTITY;
  * @author Frank Wang
  */
 @Data
-@Entity(name = "user_role")
-public class UserRoleEntity {
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = {"resource", "group"})
+@Entity(name = "resource_group")
+public class ResourceGroupEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
     @OneToOne
-    private UserEntity user;
+    private ResourceEntity resource;
 
     @OneToOne
-    private RoleEntity role;
+    private GroupEntity group;
 }

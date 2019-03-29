@@ -5,29 +5,26 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.LocalDateTime.now;
+import static javax.persistence.CascadeType.REFRESH;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * @author Frank Wang
  */
 @Data
+@Entity(name = "group")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"authorities"})
-@Entity(name = "role")
-public class RoleEntity {
+@ToString(exclude = "users")
+public class GroupEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
     private String name;
-    private Boolean generic = false;
-    private LocalDateTime createTime = now();
 
-    @OneToMany
-    @JoinTable(name = "role_authority", inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private List<AuthorityEntity> authorities = new ArrayList<>();
+    @ManyToMany(cascade = REFRESH)
+    @JoinTable(name = "group_user", inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<UserEntity> users = new ArrayList<>();
 }

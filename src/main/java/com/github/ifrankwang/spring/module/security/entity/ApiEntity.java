@@ -1,28 +1,28 @@
 package com.github.ifrankwang.spring.module.security.entity;
 
-import com.github.ifrankwang.spring.module.security.enums.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 
-import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * @author Frank Wang
  */
 @Data
-@Entity(name = "role_authority")
-public class RoleAuthorityEntity {
+@Entity(name = "api")
+@EqualsAndHashCode(of = "id")
+@ToString(exclude = "authority")
+public class ApiEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    @Enumerated(STRING)
-    private AccessLevel accessLevel;
+    private String path;
+    private String name;
 
     @OneToOne
-    private RoleEntity role;
-
-    @OneToOne
+    @JoinColumn
     private AuthorityEntity authority;
 }

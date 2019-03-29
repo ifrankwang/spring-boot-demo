@@ -19,6 +19,15 @@ public interface UserService {
     UserEntity findByEmail(String email) throws UserNotFoundException;
 
     /**
+     * 获取指定用户
+     *
+     * @param id 用户id
+     * @return 指定用户
+     * @throws UserNotFoundException 没有找到用户
+     */
+    UserEntity findById(Long id) throws UserNotFoundException;
+
+    /**
      * 获取所有用户
      *
      * @return 所有用户

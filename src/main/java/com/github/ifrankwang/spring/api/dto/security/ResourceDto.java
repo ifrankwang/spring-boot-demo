@@ -14,6 +14,6 @@ public class ResourceDto {
     private String name;
     private String tag;
     private Long parentId;
-    private List<OperationDto> operations = new ArrayList<>();
+    private List<String> availableOperations = new ArrayList<>();
     private List<ResourceDto> children = new ArrayList<>();
 }
