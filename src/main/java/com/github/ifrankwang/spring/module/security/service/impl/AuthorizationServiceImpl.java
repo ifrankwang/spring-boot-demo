@@ -5,7 +5,6 @@ import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
 import com.github.ifrankwang.spring.module.security.properties.SecurityConst;
-import com.github.ifrankwang.spring.module.security.query.AuthorityQuery;
 import com.github.ifrankwang.spring.module.security.repo.UserRepo;
 import com.github.ifrankwang.spring.module.security.service.AuthorizationService;
 import com.github.ifrankwang.spring.module.security.service.TokenService;
@@ -29,12 +28,10 @@ import static java.util.Collections.emptyList;
 public class AuthorizationServiceImpl implements AuthorizationService {
     private final TokenService tokenService;
     private final UserRepo userRepo;
-    private final AuthorityQuery query;
 
-    public AuthorizationServiceImpl(TokenService tokenService, UserRepo userRepo, AuthorityQuery query) {
+    public AuthorizationServiceImpl(TokenService tokenService, UserRepo userRepo) {
         this.tokenService = tokenService;
         this.userRepo = userRepo;
-        this.query = query;
     }
 
     @Override
