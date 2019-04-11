@@ -3,8 +3,10 @@ package com.github.ifrankwang.spring.config;
 import com.github.ifrankwang.spring.module.security.properties.SecurityConst;
 import com.google.common.base.Predicate;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
@@ -15,6 +17,7 @@ import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.google.common.base.Predicates.and;
@@ -40,6 +43,7 @@ public class Swagger2Config {
                 .useDefaultResponseMessages(false)
                 .securitySchemes(newArrayList(apiKey()))
                 .securityContexts(newArrayList(securityContext()))
+                .ignoredParameterTypes(ignoredClasses())
                 .select()
                 .paths(paths())
                 .apis(withClassAnnotation(Api.class))
@@ -65,6 +69,11 @@ public class Swagger2Config {
         return and(regex("/.*"),
                    not(regex("/application.*")),
                    not(regex(SecurityConst.AUTH_FAILED_URL)));
+    }
+
+    @SuppressWarnings("unchecked")
+    private Class[] ignoredClasses() {
+        return ArrayUtils.toArray(Authentication.class, HttpServletRequest.class);
     }
 
     /**
