@@ -6,11 +6,11 @@ import com.github.ifrankwang.spring.api.dto.security.SingleResourceRequest;
 import com.github.ifrankwang.spring.api.facade.ResourceFacade;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_RESOURCE;
@@ -34,8 +34,7 @@ public class ResourceController {
 
     @ApiOperation(value = "获取全部模块列表")
     @GetMapping("/list")
-    @PreAuthorize("accessControlFacade.canAccess(authentication, httpServletRequest.requestURI)")
-    public AppResponse<List<ResourceDto>> getResourceList() {
+    public AppResponse<List<ResourceDto>> getResourceList(HttpServletRequest request) {
         return success(facade.getResourceList());
     }
 

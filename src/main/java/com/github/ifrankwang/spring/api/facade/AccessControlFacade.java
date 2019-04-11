@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.github.ifrankwang.spring.module.security.enums.AccessLevel.PRIVATE;
@@ -35,15 +36,15 @@ public class AccessControlFacade {
         this.roleAuthorityService = roleAuthorityService;
     }
 
-    public boolean canAccess(Authentication authentication, String apiPath) {
-        return canAccess(authentication, apiPath, null, null);
+    public boolean canAccess(Authentication authentication, HttpServletRequest request) {
+        return canAccess(authentication, request, null, null);
     }
 
-    public boolean canAccess(Authentication authentication, String apiPath, @Nullable Long businessId, @Nullable Class<BusinessGetter> getterClass) {
+    public boolean canAccess(Authentication authentication, HttpServletRequest request, @Nullable Long businessId, @Nullable Class<BusinessGetter> getterClass) {
         try {
-            return accessControl(authentication, apiPath, businessId, getterClass);
+            return accessControl(authentication, request.getRequestURI(), businessId, getterClass);
         } catch (ServiceException e) {
-            logger.warn("\n鉴权失败！", e);
+            logger.warn("\n鉴权失败！详细信息：{}", e.getMessage());
         }
         return false;
     }
