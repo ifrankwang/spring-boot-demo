@@ -32,6 +32,10 @@ public class ResourceEntity implements Business {
     private LocalDateTime createTime = now();
     private String availableOperations;
 
+    @ManyToOne
+    @JoinColumn
+    private UserEntity creator;
+
     @ManyToOne(cascade = REFRESH)
     private ResourceEntity parent;
 
@@ -40,7 +44,7 @@ public class ResourceEntity implements Business {
 
     @Override
     public UserEntity getCreator() {
-        return null;
+        return creator;
     }
 
     @Override

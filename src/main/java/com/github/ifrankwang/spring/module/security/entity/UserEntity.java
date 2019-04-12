@@ -4,9 +4,7 @@ import com.github.ifrankwang.utils.password.PasswordHolder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
@@ -27,4 +25,8 @@ public class UserEntity implements PasswordHolder {
     private String password;
     private LocalDateTime createTime = now();
     private Boolean enabled = true;
+
+    @ManyToOne
+    @JoinColumn
+    private UserEntity creator;
 }

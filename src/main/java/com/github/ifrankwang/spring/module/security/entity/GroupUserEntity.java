@@ -5,10 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.annotation.Nullable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -33,4 +30,8 @@ public class GroupUserEntity {
 
     @OneToOne
     private RoleEntity role;
+
+    @ManyToOne
+    @JoinColumn
+    private UserEntity creator;
 }

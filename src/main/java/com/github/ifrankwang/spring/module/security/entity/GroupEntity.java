@@ -24,6 +24,10 @@ public class GroupEntity {
     private Long id;
     private String name;
 
+    @ManyToOne
+    @JoinColumn
+    private UserEntity creator;
+
     @ManyToMany(cascade = REFRESH)
     @JoinTable(name = "group_user", inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<UserEntity> users = new ArrayList<>();

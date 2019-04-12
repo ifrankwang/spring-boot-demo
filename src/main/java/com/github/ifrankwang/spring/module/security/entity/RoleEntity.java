@@ -27,6 +27,10 @@ public class RoleEntity {
     private Boolean generic = false;
     private LocalDateTime createTime = now();
 
+    @ManyToOne
+    @JoinColumn
+    private UserEntity creator;
+
     @OneToMany
     @JoinTable(name = "role_authority", inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<AuthorityEntity> authorities = new ArrayList<>();

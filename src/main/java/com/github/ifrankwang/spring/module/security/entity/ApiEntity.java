@@ -25,4 +25,8 @@ public class ApiEntity {
     @OneToOne
     @JoinColumn
     private AuthorityEntity authority;
+
+    @ManyToOne
+    @JoinColumn
+    private UserEntity creator;
 }

@@ -25,4 +25,8 @@ public class AuthorityEntity {
 
     @ManyToOne
     private ResourceEntity resource;
+
+    @ManyToOne
+    @JoinColumn
+    private UserEntity creator;
 }

@@ -7,6 +7,7 @@ import com.github.ifrankwang.spring.module.security.service.*;
 import com.github.ifrankwang.spring.util.ApplicateContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 import static com.github.ifrankwang.spring.module.security.enums.AccessLevel.PRIVATE;
 import static org.hibernate.internal.util.collections.CollectionHelper.isEmpty;
@@ -28,6 +30,9 @@ public class AccessControlFacade {
     private final UserService userService;
     private final RoleService roleService;
     private final RoleAuthorityService roleAuthorityService;
+
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -45,7 +50,10 @@ public class AccessControlFacade {
     public void canAccess(@Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws InsufficientPermissionException {
         boolean canAccess;
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final String uriPath = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getPath();
+        final String uriPath = Optional.ofNullable(ServletUriComponentsBuilder.fromCurrentRequestUri()
+                                                                              .build().getPath())
+                                       .map(path -> path.replace(contextPath, ""))
+                                       .orElse(null);
 
         try {
             canAccess = accessControl(authentication, uriPath, businessId, getterClass);
@@ -60,6 +68,7 @@ public class AccessControlFacade {
     }
 
     private boolean accessControl(Authentication authentication, String apiPath, @Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws ServiceException {
+        // TODO 光用path不够，还需加上requestMethod，以及如何把实际的id转成{id}形式的问题
         final ApiEntity api = apiService.findByPath(apiPath);
         final UserEntity user = userService.findByEmail((String) authentication.getPrincipal());
 
