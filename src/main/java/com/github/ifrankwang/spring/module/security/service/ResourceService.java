@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Frank Wang
  */
-public interface ResourceService {
+public interface ResourceService extends BusinessGetter {
 
     /**
      * 获取指定模块
@@ -18,6 +18,7 @@ public interface ResourceService {
      * @return 指定模块
      * @throws ResourceNotFoundException 模块未找到
      */
+    @Override
     ResourceEntity findById(Long id) throws ResourceNotFoundException;
 
     /**

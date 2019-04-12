@@ -2,15 +2,17 @@ package com.github.ifrankwang.spring.api.facade;
 
 import com.github.ifrankwang.spring.exception.ServiceException;
 import com.github.ifrankwang.spring.module.security.entity.*;
+import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.service.*;
 import com.github.ifrankwang.spring.util.ApplicateContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.github.ifrankwang.spring.module.security.enums.AccessLevel.PRIVATE;
@@ -36,20 +38,28 @@ public class AccessControlFacade {
         this.roleAuthorityService = roleAuthorityService;
     }
 
-    public boolean canAccess(Authentication authentication, HttpServletRequest request) {
-        return canAccess(authentication, request, null, null);
+    public void canAccess() throws InsufficientPermissionException {
+        canAccess(null, null);
     }
 
-    public boolean canAccess(Authentication authentication, HttpServletRequest request, @Nullable Long businessId, @Nullable Class<BusinessGetter> getterClass) {
+    public void canAccess(@Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws InsufficientPermissionException {
+        boolean canAccess;
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final String uriPath = ServletUriComponentsBuilder.fromCurrentRequestUri().build().getPath();
+
         try {
-            return accessControl(authentication, request.getRequestURI(), businessId, getterClass);
+            canAccess = accessControl(authentication, uriPath, businessId, getterClass);
         } catch (ServiceException e) {
             logger.warn("\n鉴权失败！详细信息：{}", e.getMessage());
+            canAccess = false;
         }
-        return false;
+
+        if (!canAccess) {
+            throw new InsufficientPermissionException();
+        }
     }
 
-    private boolean accessControl(Authentication authentication, String apiPath, @Nullable Long businessId, @Nullable Class<BusinessGetter> getterClass) throws ServiceException {
+    private boolean accessControl(Authentication authentication, String apiPath, @Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws ServiceException {
         final ApiEntity api = apiService.findByPath(apiPath);
         final UserEntity user = userService.findByEmail((String) authentication.getPrincipal());
 

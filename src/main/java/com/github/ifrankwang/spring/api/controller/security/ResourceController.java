@@ -4,9 +4,11 @@ import com.github.ifrankwang.spring.api.dto.AppResponse;
 import com.github.ifrankwang.spring.api.dto.security.ResourceDto;
 import com.github.ifrankwang.spring.api.dto.security.SingleResourceRequest;
 import com.github.ifrankwang.spring.api.facade.ResourceFacade;
+import com.github.ifrankwang.spring.module.security.annotation.Authorize;
+import com.github.ifrankwang.spring.module.security.annotation.BusinessAuthorize;
+import com.github.ifrankwang.spring.module.security.service.ResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +37,7 @@ public class ResourceController {
 
     @ApiOperation(value = "获取全部模块列表")
     @GetMapping("/list")
-    @PreAuthorize("@accessControlFacade.canAccess(authentication, #request)")
+    @Authorize
     public AppResponse<List<ResourceDto>> getResourceList(HttpServletRequest request) {
         return success(facade.getResourceList());
     }
@@ -54,6 +56,7 @@ public class ResourceController {
 
     @ApiOperation(value = "删除模块")
     @DeleteMapping("/{id}")
+    @BusinessAuthorize(id = "#id", getterClass = ResourceService.class)
     public AppResponse deleteResource(@PathVariable Long id) {
         facade.deleteResource(id);
         return success();

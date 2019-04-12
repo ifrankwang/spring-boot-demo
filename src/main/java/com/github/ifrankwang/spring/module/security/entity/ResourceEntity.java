@@ -23,7 +23,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @ToString(exclude = {"parent", "children"})
-public class ResourceEntity {
+public class ResourceEntity implements Business {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -37,4 +37,14 @@ public class ResourceEntity {
 
     @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true, mappedBy = "parent")
     private List<ResourceEntity> children = new ArrayList<>();
+
+    @Override
+    public UserEntity getCreator() {
+        return null;
+    }
+
+    @Override
+    public GroupEntity getGroup() {
+        return null;
+    }
 }
