@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_RESOURCE;
@@ -38,18 +37,20 @@ public class ResourceController {
     @ApiOperation(value = "获取全部模块列表")
     @GetMapping("/list")
     @Authorize
-    public AppResponse<List<ResourceDto>> getResourceList(HttpServletRequest request) {
+    public AppResponse<List<ResourceDto>> getResourceList() {
         return success(facade.getResourceList());
     }
 
     @ApiOperation(value = "创建一个新的资源/模块")
     @PostMapping
-    public AppResponse<ResourceDto> createResource(@Validated @RequestBody SingleResourceRequest request) {
-        return success(facade.createResource(request));
+    @Authorize
+    public AppResponse<ResourceDto> createResource(@Validated @RequestBody SingleResourceRequest resourceRequest) {
+        return success(facade.createResource(resourceRequest));
     }
 
     @ApiOperation(value = "更新模块信息")
     @PutMapping("/{id}")
+    @BusinessAuthorize(id = "#id", getterClass = ResourceService.class)
     public AppResponse<ResourceDto> updateResource(@PathVariable Long id, @Validated @RequestBody SingleResourceRequest resourceRequest) {
         return success(facade.updateResource(id, resourceRequest));
     }
