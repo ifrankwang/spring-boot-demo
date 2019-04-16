@@ -14,7 +14,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Data
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"group", "user"})
+@ToString(exclude = {"group", "user", "role", "creator"})
 @Entity(name = "group_user")
 public class GroupUserEntity {
     @Id

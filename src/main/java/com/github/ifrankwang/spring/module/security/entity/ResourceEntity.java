@@ -22,7 +22,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity(name = "resource")
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
-@ToString(exclude = {"parent", "children"})
+@ToString(exclude = {"parent", "children", "creator"})
 public class ResourceEntity implements Business {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -31,6 +31,8 @@ public class ResourceEntity implements Business {
     private String tag;
     private LocalDateTime createTime = now();
     private String availableOperations;
+    @Column(name = "protected")
+    private Boolean protect;
 
     @ManyToOne
     @JoinColumn

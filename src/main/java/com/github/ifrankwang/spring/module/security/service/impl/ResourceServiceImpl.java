@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.module.security.service.impl;
 
 import com.github.ifrankwang.spring.api.converter.security.ResourceConverter;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
+import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceNotFoundException;
 import com.github.ifrankwang.spring.module.security.repo.ResourceRepo;
@@ -49,8 +50,11 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public void delete(Long id) throws ResourceNotFoundException {
+    public void delete(Long id) throws ResourceNotFoundException, InsufficientPermissionException {
         final ResourceEntity resourceEntity = repo.findById(id).orElseThrow(ResourceNotFoundException::new);
+        if (resourceEntity.getProtect()) {
+            throw new InsufficientPermissionException();
+        }
         repo.delete(resourceEntity);
     }
 }

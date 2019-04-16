@@ -17,7 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Data
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"authorities"})
+@ToString(exclude = {"authorities", "creator"})
 @Entity(name = "role")
 public class RoleEntity {
     @Id

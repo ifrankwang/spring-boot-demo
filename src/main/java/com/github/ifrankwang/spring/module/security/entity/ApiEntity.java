@@ -14,11 +14,12 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @Entity(name = "api")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "authority")
+@ToString(exclude = {"authority", "creator"})
 public class ApiEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    private String method;
     private String path;
     private String name;
 

@@ -3,11 +3,13 @@ package com.github.ifrankwang.spring.util;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Frank Wang
  */
-public class ApplicateContextHelper implements ApplicationContextAware {
+@Component
+public class ApplicationContextHelper implements ApplicationContextAware {
     private static ApplicationContext context;
 
     public static <T> T getBean(Class<T> type) {

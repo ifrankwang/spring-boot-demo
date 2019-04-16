@@ -17,7 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Data
 @Entity(name = "group")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "users")
+@ToString(exclude = {"users", "creator"})
 public class GroupEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)

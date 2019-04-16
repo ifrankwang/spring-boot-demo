@@ -4,16 +4,18 @@ import com.github.ifrankwang.spring.exception.ServiceException;
 import com.github.ifrankwang.spring.module.security.entity.*;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.service.*;
-import com.github.ifrankwang.spring.util.ApplicateContextHelper;
+import com.github.ifrankwang.spring.util.ApplicationContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,14 +51,13 @@ public class AccessControlFacade {
 
     public void canAccess(@Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws InsufficientPermissionException {
         boolean canAccess;
+        ServletRequestAttributes requestAttributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        final HttpServletRequest request = requestAttributes.getRequest();
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final String uriPath = Optional.ofNullable(ServletUriComponentsBuilder.fromCurrentRequestUri()
-                                                                              .build().getPath())
-                                       .map(path -> path.replace(contextPath, ""))
-                                       .orElse(null);
 
         try {
-            canAccess = accessControl(authentication, uriPath, businessId, getterClass);
+            canAccess = accessControl(authentication, request, businessId, getterClass);
         } catch (ServiceException e) {
             logger.warn("\n鉴权失败！详细信息：{}", e.getMessage());
             canAccess = false;
@@ -67,15 +68,20 @@ public class AccessControlFacade {
         }
     }
 
-    private boolean accessControl(Authentication authentication, String apiPath, @Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws ServiceException {
+    private boolean accessControl(Authentication authentication, HttpServletRequest request, @Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws ServiceException {
         // TODO 光用path不够，还需加上requestMethod，以及如何把实际的id转成{id}形式的问题
-        final ApiEntity api = apiService.findByPath(apiPath);
+        final String idPlaceHolder = "{id}";
+        final String uriPath = request.getRequestURI().replace(contextPath, "");
+        final String requestPath = Optional.ofNullable(businessId)
+                                           .map(id -> uriPath.replace(id.toString(), idPlaceHolder))
+                                           .orElse(uriPath);
+        final ApiEntity api = apiService.findByMethodAndPath(request.getMethod(), requestPath);
         final UserEntity user = userService.findByEmail((String) authentication.getPrincipal());
 
-        if (null == businessId) {
+        if (null == businessId || null == getterClass) {
             return genericAccessControl(api, user);
         } else {
-            final BusinessGetter getter = ApplicateContextHelper.getBean(getterClass);
+            final BusinessGetter getter = ApplicationContextHelper.getBean(getterClass);
             final Business business = getter.findById(businessId);
             return businessAccessControl(business, api, user);
         }
@@ -117,7 +123,12 @@ public class AccessControlFacade {
     private List<RoleAuthorityEntity> getBusinessRoleAuthorities(Business business, ApiEntity api, UserEntity user) {
         final AuthorityEntity requiredAuthority = api.getAuthority();
         final GroupEntity requiredGroup = business.getGroup();
-        final List<RoleEntity> userRoles = roleService.findBusinessRoleOfUser(user, requiredGroup);
+        final List<RoleEntity> userRoles;
+        if (null != requiredGroup) {
+            userRoles = roleService.findBusinessRoleOfUser(user, requiredGroup);
+        } else {
+            userRoles = roleService.findGenericRoleOfUser(user);
+        }
         return roleAuthorityService.findByRolesAndAuthority(userRoles, requiredAuthority);
     }
 
@@ -128,8 +139,8 @@ public class AccessControlFacade {
         // 资源拥有者需要起码PRIVATE的权限，否则要大于PRIVATE的权限
         final boolean isOwner = user.equals(business.getCreator());
         return roleAuthorities.stream().anyMatch(roleAuthority -> {
-            return isOwner ? PRIVATE.compareTo(roleAuthority.getAccessLevel()) >= 0 :
-                   PRIVATE.compareTo(roleAuthority.getAccessLevel()) > 0;
+            return isOwner ? PRIVATE.compareTo(roleAuthority.getAccessLevel()) <= 0 :
+                   PRIVATE.compareTo(roleAuthority.getAccessLevel()) < 0;
         });
     }
 }

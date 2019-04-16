@@ -1,6 +1,7 @@
 package com.github.ifrankwang.spring.module.security.service;
 
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
+import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceNotFoundException;
 
@@ -52,6 +53,7 @@ public interface ResourceService extends BusinessGetter {
      *
      * @param id 模块id
      * @throws ResourceNotFoundException 模块不存在
+     * @throws InsufficientPermissionException 权限不足
      */
-    void delete(Long id) throws ResourceNotFoundException;
+    void delete(Long id) throws ResourceNotFoundException, InsufficientPermissionException;
 }

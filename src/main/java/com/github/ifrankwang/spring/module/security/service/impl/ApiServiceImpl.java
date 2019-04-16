@@ -21,4 +21,9 @@ public class ApiServiceImpl implements ApiService {
     public ApiEntity findByPath(String path) throws ApiNotFoundException {
         return repo.findFirstByPath(path).orElseThrow(ApiNotFoundException::new);
     }
+
+    @Override
+    public ApiEntity findByMethodAndPath(String method, String path) throws ApiNotFoundException {
+        return repo.findFirstByMethodAndPath(method, path).orElseThrow(ApiNotFoundException::new);
+    }
 }

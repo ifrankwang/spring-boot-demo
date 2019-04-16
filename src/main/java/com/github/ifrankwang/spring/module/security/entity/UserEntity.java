@@ -3,6 +3,7 @@ package com.github.ifrankwang.spring.module.security.entity;
 import com.github.ifrankwang.utils.password.PasswordHolder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Data
 @EqualsAndHashCode(of = "id")
+@ToString(exclude = "creator")
 @Entity(name = "user")
 public class UserEntity implements PasswordHolder {
     @Id

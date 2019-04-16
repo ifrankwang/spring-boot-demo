@@ -17,4 +17,13 @@ public interface ApiRepo extends Repository<ApiEntity, Long> {
      * @return api实体类对象
      */
     Optional<ApiEntity> findFirstByPath(String path);
+
+    /**
+     * 根据api请求方法和路径获取api实体类对象
+     *
+     * @param method 请求方法
+     * @param path   请求路径
+     * @return api实体类对象
+     */
+    Optional<ApiEntity> findFirstByMethodAndPath(String method, String path);
 }
