@@ -69,7 +69,6 @@ public class AccessControlFacade {
     }
 
     private boolean accessControl(Authentication authentication, HttpServletRequest request, @Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws ServiceException {
-        // TODO 光用path不够，还需加上requestMethod，以及如何把实际的id转成{id}形式的问题
         final String idPlaceHolder = "{id}";
         final String uriPath = request.getRequestURI().replace(contextPath, "");
         final String requestPath = Optional.ofNullable(businessId)
