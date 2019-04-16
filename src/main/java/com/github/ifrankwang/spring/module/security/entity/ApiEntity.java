@@ -1,11 +1,13 @@
 package com.github.ifrankwang.spring.module.security.entity;
 
+import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -19,7 +21,8 @@ public class ApiEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private String method;
+    @Enumerated(STRING)
+    private ApiMethod method;
     private String path;
     private String name;
 
