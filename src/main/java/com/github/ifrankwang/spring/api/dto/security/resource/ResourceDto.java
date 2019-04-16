@@ -1,5 +1,6 @@
-package com.github.ifrankwang.spring.api.dto.security;
+package com.github.ifrankwang.spring.api.dto.security.resource;
 
+import com.github.ifrankwang.spring.api.dto.security.authority.AuthorityDto;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ public class ResourceDto {
     private String name;
     private String tag;
     private Long parentId;
-    private List<String> availableOperations = new ArrayList<>();
+    private Boolean protect;
+    private List<AuthorityDto> operations = new ArrayList<>();
     private List<ResourceDto> children = new ArrayList<>();
 }

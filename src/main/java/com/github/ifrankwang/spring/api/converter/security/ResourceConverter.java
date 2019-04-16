@@ -1,8 +1,8 @@
 package com.github.ifrankwang.spring.api.converter.security;
 
 import com.github.ifrankwang.spring.api.converter.ListStringConverter;
-import com.github.ifrankwang.spring.api.dto.security.ResourceDto;
-import com.github.ifrankwang.spring.api.dto.security.SingleResourceRequest;
+import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -22,12 +22,12 @@ public interface ResourceConverter {
     @Mapping(target = "parent", source = "parentId")
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "children", ignore = true)
-    ResourceEntity toEntity(SingleResourceRequest request);
+    ResourceEntity toEntity(BaseResourceDto request);
 
     @Mapping(target = "parent", source = "request.parentId")
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "children", ignore = true)
-    ResourceEntity toEntity(SingleResourceRequest request, Long id);
+    ResourceEntity toEntity(BaseResourceDto request, Long id);
 
     @Mapping(target = "children", ignore = true)
     @Mapping(target = "createTime", ignore = true)

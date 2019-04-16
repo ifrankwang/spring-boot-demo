@@ -1,8 +1,8 @@
 package com.github.ifrankwang.spring.api.facade.impl;
 
 import com.github.ifrankwang.spring.api.converter.security.ResourceConverter;
-import com.github.ifrankwang.spring.api.dto.security.ResourceDto;
-import com.github.ifrankwang.spring.api.dto.security.SingleResourceRequest;
+import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.api.facade.ResourceFacade;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
@@ -31,14 +31,14 @@ public class ResourceFacadeImpl implements ResourceFacade {
     }
 
     @Override
-    public ResourceDto createResource(SingleResourceRequest request) throws OperationNotFoundException, ResourceExistedException {
+    public ResourceDto createResource(BaseResourceDto request) throws OperationNotFoundException, ResourceExistedException {
         ResourceEntity entity = ResourceConverter.INSTANCE.toEntity(request);
         entity = resourceService.create(entity);
         return ResourceConverter.INSTANCE.toDto(entity);
     }
 
     @Override
-    public ResourceDto updateResource(Long id, SingleResourceRequest request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException {
+    public ResourceDto updateResource(Long id, BaseResourceDto request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException {
         ResourceEntity entity = ResourceConverter.INSTANCE.toEntity(request, id);
         resourceService.update(entity);
         return ResourceConverter.INSTANCE.toDto(entity);

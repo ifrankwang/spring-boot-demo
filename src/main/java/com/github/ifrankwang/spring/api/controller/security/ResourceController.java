@@ -1,8 +1,8 @@
 package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
-import com.github.ifrankwang.spring.api.dto.security.ResourceDto;
-import com.github.ifrankwang.spring.api.dto.security.SingleResourceRequest;
+import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.api.facade.ResourceFacade;
 import com.github.ifrankwang.spring.module.security.annotation.Authorize;
 import com.github.ifrankwang.spring.module.security.annotation.BusinessAuthorize;
@@ -44,14 +44,14 @@ public class ResourceController {
     @ApiOperation(value = "创建一个新的资源/模块")
     @PostMapping
     @Authorize
-    public AppResponse<ResourceDto> createResource(@Validated @RequestBody SingleResourceRequest resourceRequest) {
+    public AppResponse<ResourceDto> createResource(@Validated @RequestBody BaseResourceDto resourceRequest) {
         return success(facade.createResource(resourceRequest));
     }
 
     @ApiOperation(value = "更新模块信息")
     @PutMapping("/{id}")
     @BusinessAuthorize(id = "#id", getterClass = ResourceService.class)
-    public AppResponse<ResourceDto> updateResource(@PathVariable Long id, @Validated @RequestBody SingleResourceRequest resourceRequest) {
+    public AppResponse<ResourceDto> updateResource(@PathVariable Long id, @Validated @RequestBody BaseResourceDto resourceRequest) {
         return success(facade.updateResource(id, resourceRequest));
     }
 

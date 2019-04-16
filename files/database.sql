@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 12/04/2019 18:20:39
+ Date: 16/04/2019 18:33:04
 */
 
 SET NAMES utf8mb4;
@@ -27,10 +27,10 @@ CREATE TABLE `api`
     `method`       varchar(8) COLLATE utf8_bin NOT NULL COMMENT '请求方式',
     `path`         text COLLATE utf8_bin       NOT NULL COMMENT '请求接口路径',
     `name`         text COLLATE utf8_bin       NOT NULL COMMENT '接口名称',
-    `authority_id` bigint(32)                  NOT NULL COMMENT '涉及到的权限id',
+    `authority_id` bigint(32) DEFAULT NULL COMMENT '涉及到的权限id',
     `creator_id`   bigint(32)                  NOT NULL COMMENT '创建者',
     `create_time`  datetime                    NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8
@@ -45,7 +45,7 @@ VALUES (1, 'GET', '/api/resource/list', '获取模块', 1, 1, '2019-04-12 10:00:
 INSERT INTO `api`
 VALUES (2, 'POST', '/api/resource', '创建模块', 2, 1, '2019-04-12 10:00:41');
 INSERT INTO `api`
-VALUES (3, 'UPDATE', '/api/resource/{id}', '更新模块', 3, 1, '2019-04-12 10:00:41');
+VALUES (3, 'PUT', '/api/resource/{id}', '更新模块', 3, 1, '2019-04-12 10:00:41');
 INSERT INTO `api`
 VALUES (4, 'DELETE', '/api/resource/{id}', '删除模块', 4, 1, '2019-04-12 10:00:41');
 COMMIT;
@@ -59,9 +59,7 @@ CREATE TABLE `authority`
     `id`          bigint(32)                    NOT NULL AUTO_INCREMENT,
     `resource_id` bigint(32)                    NOT NULL COMMENT '资源id',
     `operation`   varchar(128) COLLATE utf8_bin NOT NULL COMMENT '操作',
-    `creator_id`  bigint(32)                    NOT NULL COMMENT '创建者',
-    `create_time` datetime                      NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8
@@ -72,13 +70,13 @@ CREATE TABLE `authority`
 -- ----------------------------
 BEGIN;
 INSERT INTO `authority`
-VALUES (1, 1, 'GET', 1, '2019-04-12 09:56:11');
+VALUES (1, 1, 'GET');
 INSERT INTO `authority`
-VALUES (2, 1, 'CREATE', 1, '2019-04-12 09:56:11');
+VALUES (2, 1, 'CREATE');
 INSERT INTO `authority`
-VALUES (3, 1, 'UPDATE', 1, '2019-04-12 09:56:11');
+VALUES (3, 1, 'UPDATE');
 INSERT INTO `authority`
-VALUES (4, 1, 'DELETE', 1, '2019-04-12 09:56:11');
+VALUES (4, 1, 'DELETE');
 COMMIT;
 
 -- ----------------------------
@@ -117,7 +115,7 @@ CREATE TABLE `group_user`
 -- ----------------------------
 BEGIN;
 INSERT INTO `group_user`
-VALUES (2, NULL, 1, 1, 1);
+VALUES (1, NULL, 1, 1, 1);
 COMMIT;
 
 -- ----------------------------
@@ -126,14 +124,14 @@ COMMIT;
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource`
 (
-    `id`                   bigint(32)                    NOT NULL AUTO_INCREMENT,
-    `name`                 varchar(255) COLLATE utf8_bin NOT NULL COMMENT '名称（中文）',
-    `tag`                  varchar(255) COLLATE utf8_bin NOT NULL COMMENT '标签（英文）',
-    `available_operations` text COLLATE utf8_bin         NOT NULL,
-    `creator_id`           bigint(32)                    NOT NULL COMMENT '创建者',
-    `create_time`          datetime                      NOT NULL COMMENT '创建时间',
-    `parent_id`            bigint(32) DEFAULT NULL COMMENT '亲代id',
-  PRIMARY KEY (`id`)
+    `id`          bigint(32)                    NOT NULL AUTO_INCREMENT,
+    `name`        varchar(255) COLLATE utf8_bin NOT NULL COMMENT '名称（中文）',
+    `tag`         varchar(255) COLLATE utf8_bin NOT NULL COMMENT '标签（英文）',
+    `creator_id`  bigint(32)                    NOT NULL COMMENT '创建者',
+    `create_time` datetime                      NOT NULL COMMENT '创建时间',
+    `parent_id`   bigint(32)                             DEFAULT NULL COMMENT '亲代id',
+    `protected`   tinyint(1)                    NOT NULL DEFAULT '0' COMMENT '是否受保护（无法删除、更新）',
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 14
   DEFAULT CHARSET = utf8
@@ -144,7 +142,7 @@ CREATE TABLE `resource`
 -- ----------------------------
 BEGIN;
 INSERT INTO `resource`
-VALUES (1, '模块', 'resource', '[\"GET\", \"CREATE\", \"UPDATE\", \"DELETE\"]', 1, '2019-04-12 09:55:29', NULL);
+VALUES (1, '模块', 'resource', 1, '2019-04-12 09:55:29', NULL, 1);
 COMMIT;
 
 -- ----------------------------
@@ -158,7 +156,7 @@ CREATE TABLE `role`
     `generic`     tinyint(1)                    NOT NULL DEFAULT '1' COMMENT '是否为非业务类角色',
     `creator_id`  bigint(32)                    NOT NULL COMMENT '创建者',
     `create_time` datetime                      NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8
@@ -178,11 +176,11 @@ COMMIT;
 DROP TABLE IF EXISTS `role_authority`;
 CREATE TABLE `role_authority`
 (
-    `id`           bigint(32)                  NOT NULL AUTO_INCREMENT,
-    `role_id`      bigint(32)                  NOT NULL COMMENT '角色id',
-    `authority_id` bigint(32)                  NOT NULL COMMENT '权限id',
-  `access_level` varchar(128) COLLATE utf8_bin NOT NULL DEFAULT 'PRIVATE' COMMENT '适用范围：PRIVATE-自己创建的；PROTECT-团队内的；PUBLIC-所有的',
-  PRIMARY KEY (`id`)
+    `id`           bigint(32)                    NOT NULL AUTO_INCREMENT,
+    `role_id`      bigint(32)                    NOT NULL COMMENT '角色id',
+    `authority_id` bigint(32)                    NOT NULL COMMENT '权限id',
+    `access_level` varchar(128) COLLATE utf8_bin NOT NULL DEFAULT 'PRIVATE' COMMENT '适用范围：PRIVATE-自己创建的；PROTECT-团队内的；PUBLIC-所有的',
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 5
   DEFAULT CHARSET = utf8
@@ -215,7 +213,7 @@ CREATE TABLE `user`
     `creator_id`  bigint(32)                    NOT NULL COMMENT '创建者',
     `create_time` datetime                      NOT NULL COMMENT '创建时间',
     `enabled`     tinyint(1)                    NOT NULL DEFAULT '1' COMMENT '是否有效',
-  PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 2
   DEFAULT CHARSET = utf8

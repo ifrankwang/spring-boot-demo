@@ -1,7 +1,7 @@
 package com.github.ifrankwang.spring.api.facade;
 
-import com.github.ifrankwang.spring.api.dto.security.ResourceDto;
-import com.github.ifrankwang.spring.api.dto.security.SingleResourceRequest;
+import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceNotFoundException;
@@ -28,7 +28,7 @@ public interface ResourceFacade {
      * @throws OperationNotFoundException 模块不存在
      * @throws ResourceExistedException 同标签名模块已存在
      */
-    ResourceDto createResource(SingleResourceRequest request) throws OperationNotFoundException, ResourceExistedException;
+    ResourceDto createResource(BaseResourceDto request) throws OperationNotFoundException, ResourceExistedException;
 
     /**
      * 更新模块信息
@@ -40,7 +40,7 @@ public interface ResourceFacade {
      * @throws OperationNotFoundException 操作不存在
      * @throws ResourceExistedException   同标签名模块已存在
      */
-    ResourceDto updateResource(Long id, SingleResourceRequest request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException;
+    ResourceDto updateResource(Long id, BaseResourceDto request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException;
 
     /**
      * 删除模块

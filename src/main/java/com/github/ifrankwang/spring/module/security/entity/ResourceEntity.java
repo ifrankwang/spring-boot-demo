@@ -22,7 +22,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity(name = "resource")
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
-@ToString(exclude = {"parent", "children", "creator"})
+@ToString(exclude = {"parent", "children", "creator", "operations"})
 public class ResourceEntity implements Business {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -30,7 +30,6 @@ public class ResourceEntity implements Business {
     private String name;
     private String tag;
     private LocalDateTime createTime = now();
-    private String availableOperations;
     @Column(name = "protected")
     private Boolean protect;
 
@@ -43,6 +42,9 @@ public class ResourceEntity implements Business {
 
     @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true, mappedBy = "parent")
     private List<ResourceEntity> children = new ArrayList<>();
+
+    @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true, mappedBy = "resource")
+    private List<AuthorityEntity> operations = new ArrayList<>();
 
     @Override
     public UserEntity getCreator() {
