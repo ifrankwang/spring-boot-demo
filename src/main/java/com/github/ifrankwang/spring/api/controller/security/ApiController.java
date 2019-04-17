@@ -1,10 +1,15 @@
 package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
+import com.github.ifrankwang.spring.api.dto.PageRequest;
+import com.github.ifrankwang.spring.api.dto.security.ApiDto;
 import com.github.ifrankwang.spring.api.facade.ApiFacade;
+import com.github.ifrankwang.utils.page.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,5 +38,11 @@ public class ApiController {
     public AppResponse updateApis() {
         facade.updateApis();
         return success();
+    }
+
+    @ApiOperation("获取接口列表（分页）")
+    @GetMapping("/list")
+    public AppResponse<Page<ApiDto>> getApiPage(@Validated PageRequest request) {
+        return success(facade.getApiPage(request));
     }
 }

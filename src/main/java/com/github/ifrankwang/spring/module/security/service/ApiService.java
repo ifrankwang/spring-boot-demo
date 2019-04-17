@@ -3,6 +3,8 @@ package com.github.ifrankwang.spring.module.security.service;
 import com.github.ifrankwang.spring.module.security.entity.ApiEntity;
 import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 import com.github.ifrankwang.spring.module.security.exception.ApiNotFoundException;
+import com.github.ifrankwang.utils.page.Page;
+import com.github.ifrankwang.utils.page.Pageable;
 
 import java.util.Optional;
 
@@ -19,13 +21,11 @@ public interface ApiService {
     ApiEntity create(ApiEntity entity);
 
     /**
-     * 根据api路径获取api实体类对象
-     *
-     * @param path api路径
-     * @return api实体类对象
-     * @throws ApiNotFoundException 没有找到对应实体类对象
+     * 获取分页接口列表
+     * @param pageable 分页属性
+     * @return 分页接口列表
      */
-    ApiEntity findByPath(String path) throws ApiNotFoundException;
+    Page<ApiEntity> findAll(Pageable pageable);
 
     /**
      * 根据api请求方法和路径获取api实体类对象

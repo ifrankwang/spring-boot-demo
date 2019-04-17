@@ -4,8 +4,11 @@ import com.github.ifrankwang.spring.module.security.entity.ApiEntity;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 import com.github.ifrankwang.spring.module.security.exception.ApiNotFoundException;
+import com.github.ifrankwang.spring.module.security.query.ApiQuery;
 import com.github.ifrankwang.spring.module.security.repo.ApiRepo;
 import com.github.ifrankwang.spring.module.security.service.ApiService;
+import com.github.ifrankwang.utils.page.Page;
+import com.github.ifrankwang.utils.page.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,9 +22,11 @@ import java.util.Optional;
 @Service
 public class ApiServiceImpl implements ApiService {
     private final ApiRepo repo;
+    private final ApiQuery query;
 
-    public ApiServiceImpl(ApiRepo repo) {
+    public ApiServiceImpl(ApiRepo repo, ApiQuery query) {
         this.repo = repo;
+        this.query = query;
     }
 
     @Override
@@ -34,8 +39,8 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public ApiEntity findByPath(String path) throws ApiNotFoundException {
-        return repo.findFirstByPath(path).orElseThrow(ApiNotFoundException::new);
+    public Page<ApiEntity> findAll(Pageable pageable) {
+        return query.findAll(pageable);
     }
 
     @Override

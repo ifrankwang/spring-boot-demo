@@ -2,11 +2,15 @@ package com.github.ifrankwang.spring.api.facade.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.ifrankwang.spring.api.converter.security.ApiConverter;
+import com.github.ifrankwang.spring.api.dto.security.ApiDto;
 import com.github.ifrankwang.spring.api.facade.ApiFacade;
-import com.github.ifrankwang.spring.exception.InvalidRequestArgumentsException;
+import com.github.ifrankwang.spring.exception.InternalServerError;
 import com.github.ifrankwang.spring.module.security.entity.ApiEntity;
 import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 import com.github.ifrankwang.spring.module.security.service.ApiService;
+import com.github.ifrankwang.utils.page.Page;
+import com.github.ifrankwang.utils.page.Pageable;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +41,7 @@ public class ApiFacadeImpl implements ApiFacade {
     }
 
     @Override
-    public void updateApis() throws InvalidRequestArgumentsException {
+    public void updateApis() throws InternalServerError {
         try {
             final String jsonString = restTemplate.getForObject("/v2/api-docs", String.class);
             final JsonNode rootNode = new ObjectMapper().readTree(jsonString);
@@ -65,10 +69,16 @@ public class ApiFacadeImpl implements ApiFacade {
                     });
                 });
                 return pathsNode;
-            }).orElseThrow(InvalidRequestArgumentsException::new);
+            }).orElseThrow(InternalServerError::new);
         } catch (IOException e) {
             logger.error("\n无法解析的json！", e);
-            throw new InvalidRequestArgumentsException();
+            throw new InternalServerError();
         }
+    }
+
+    @Override
+    public Page<ApiDto> getApiPage(Pageable pageable) {
+        final Page<ApiEntity> apiEntityPage = apiService.findAll(pageable);
+        return ApiConverter.INSTANCE.toPage(apiEntityPage);
     }
 }
