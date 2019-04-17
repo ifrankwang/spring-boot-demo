@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.module.security.repo;
 
 import com.github.ifrankwang.spring.interfaces.Repository;
 import com.github.ifrankwang.spring.module.security.entity.ApiEntity;
+import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 
 import java.util.Optional;
 
@@ -25,5 +26,5 @@ public interface ApiRepo extends Repository<ApiEntity, Long> {
      * @param path   请求路径
      * @return api实体类对象
      */
-    Optional<ApiEntity> findFirstByMethodAndPath(String method, String path);
+    Optional<ApiEntity> findFirstByMethodAndPath(ApiMethod method, String path);
 }

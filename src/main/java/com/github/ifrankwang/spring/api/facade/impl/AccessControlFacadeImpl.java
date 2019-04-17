@@ -3,6 +3,7 @@ package com.github.ifrankwang.spring.api.facade.impl;
 import com.github.ifrankwang.spring.api.facade.AccessControlFacade;
 import com.github.ifrankwang.spring.exception.ServiceException;
 import com.github.ifrankwang.spring.module.security.entity.*;
+import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.service.*;
 import com.github.ifrankwang.spring.util.ApplicationContextHelper;
@@ -75,7 +76,7 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
         final String requestPath = Optional.ofNullable(businessId)
                                            .map(id -> uriPath.replace(id.toString(), idPlaceHolder))
                                            .orElse(uriPath);
-        final ApiEntity api = apiService.findByMethodAndPath(request.getMethod(), requestPath);
+        final ApiEntity api = apiService.findByMethodAndPath(ApiMethod.valueOf(request.getMethod()), requestPath);
         final UserEntity user = userService.findByEmail((String) authentication.getPrincipal());
 
         if (null == businessId || null == getterClass) {

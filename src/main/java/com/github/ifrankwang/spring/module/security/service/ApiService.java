@@ -1,12 +1,23 @@
 package com.github.ifrankwang.spring.module.security.service;
 
 import com.github.ifrankwang.spring.module.security.entity.ApiEntity;
+import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 import com.github.ifrankwang.spring.module.security.exception.ApiNotFoundException;
+
+import java.util.Optional;
 
 /**
  * @author Frank Wang
  */
 public interface ApiService {
+    /**
+     * 创建新的接口实体类对象
+     *
+     * @param entity 要创建的接口实体类对象
+     * @return 已创建的接口实体类对象
+     */
+    ApiEntity create(ApiEntity entity);
+
     /**
      * 根据api路径获取api实体类对象
      *
@@ -24,5 +35,15 @@ public interface ApiService {
      * @return api实体类对象
      * @throws ApiNotFoundException 没有找到对应实体类对象
      */
-    ApiEntity findByMethodAndPath(String method, String path) throws ApiNotFoundException;
+    ApiEntity findByMethodAndPath(ApiMethod method, String path) throws ApiNotFoundException;
+
+    /**
+     * 根据api请求方法和路径获取api实体类对象
+     *
+     * @param method 请求方法
+     * @param path   请求路径
+     * @return api实体类对象
+     * @throws ApiNotFoundException 没有找到对应实体类对象
+     */
+    Optional<ApiEntity> findOptionalByMethodAndPath(ApiMethod method, String path);
 }

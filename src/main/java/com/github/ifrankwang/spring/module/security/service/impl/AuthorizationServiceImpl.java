@@ -55,6 +55,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
             throws UserNotFoundException {
         final String email = tokenService.getSubjectFrom(requestToken.getTokenValue());
         final UserEntity user = userRepo.findByEmail(email).orElseThrow(UserNotFoundException::new);
-        return new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), emptyList());
+        final UsernamePasswordAuthenticationToken token =
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword(), emptyList());
+        token.setDetails(user);
+        return token;
     }
 }

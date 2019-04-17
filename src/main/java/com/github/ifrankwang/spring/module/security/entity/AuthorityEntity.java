@@ -27,6 +27,6 @@ public class AuthorityEntity {
     @ManyToOne
     private ResourceEntity resource;
 
-    @OneToOne
+    @OneToOne(mappedBy = "authority")
     private ApiEntity api;
 }
