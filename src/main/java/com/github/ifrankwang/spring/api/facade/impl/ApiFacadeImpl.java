@@ -42,18 +42,22 @@ public class ApiFacadeImpl implements ApiFacade {
             final String jsonString = restTemplate.getForObject("/v2/api-docs", String.class);
             final JsonNode rootNode = new ObjectMapper().readTree(jsonString);
             Optional.ofNullable(rootNode.get("paths")).map(pathsNode -> {
+                // 所有接口相关的信息在paths下
                 Lists.newArrayList(pathsNode.fields()).forEach(pathEntry -> {
+                    // paths的格式为：{"paths": {"/api": {...}}}}
                     final String apiPath = pathEntry.getKey();
                     final JsonNode pathNode = pathEntry.getValue();
                     Lists.newArrayList(pathNode.fields()).forEach(methodEntry -> {
+                        // paths下每个参数都是单个api的信息，结构为：{"/api": {"put": {"summary": "接口说明"}}
                         final String method = methodEntry.getKey().toUpperCase();
                         final String name = methodEntry.getValue().get("summary").asText();
                         final ApiMethod apiMethod = ApiMethod.valueOf(method.toUpperCase());
-                        final Optional<ApiEntity> opEntity = apiService.findOptionalByMethodAndPath(apiMethod, apiPath);
-                        opEntity.map(entity -> {
+                        apiService.findOptionalByMethodAndPath(apiMethod, apiPath).map(entity -> {
+                            // 已记录的api信息则更新接口说明
                             entity.setName(name);
                             return entity;
                         }).orElseGet(() -> {
+                            // 未记录的api信息则增加记录
                             final ApiEntity apiEntity = ApiEntity.builder().name(name).method(ApiMethod.valueOf(method))
                                                                  .path(apiPath).build();
                             return apiService.create(apiEntity);
