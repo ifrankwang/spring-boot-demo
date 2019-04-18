@@ -1,5 +1,6 @@
 package com.github.ifrankwang.spring.module.security.entity;
 
+import com.github.ifrankwang.spring.interfaces.BidirectionalRelation;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @ToString(exclude = {"parent", "children", "creator", "operations"})
-public class ResourceEntity implements Business {
+public class ResourceEntity implements Business, BidirectionalRelation {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -54,5 +55,10 @@ public class ResourceEntity implements Business {
     @Override
     public GroupEntity getGroup() {
         return null;
+    }
+
+    @Override
+    public void completeRelation() {
+        operations.forEach(operation -> operation.setResource(this));
     }
 }

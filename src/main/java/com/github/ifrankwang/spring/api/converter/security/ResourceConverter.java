@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Frank Wang
  */
-@Mapper(uses = {ResourceIdConverter.class, ListStringConverter.class})
+@Mapper(uses = {ResourceIdConverter.class, ListStringConverter.class, AuthorityConverter.class})
 public interface ResourceConverter {
     ResourceConverter INSTANCE = Mappers.getMapper(ResourceConverter.class);
 
@@ -22,11 +22,13 @@ public interface ResourceConverter {
     @Mapping(target = "parent", source = "parentId")
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "children", ignore = true)
+    @Mapping(target = "creator", ignore = true)
     ResourceEntity toEntity(BaseResourceDto request);
 
     @Mapping(target = "parent", source = "request.parentId")
     @Mapping(target = "createTime", ignore = true)
     @Mapping(target = "children", ignore = true)
+    @Mapping(target = "creator", ignore = true)
     ResourceEntity toEntity(BaseResourceDto request, Long id);
 
     @Mapping(target = "children", ignore = true)

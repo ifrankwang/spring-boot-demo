@@ -7,10 +7,9 @@ import com.github.ifrankwang.spring.module.security.exception.ApiNotFoundExcepti
 import com.github.ifrankwang.spring.module.security.query.ApiQuery;
 import com.github.ifrankwang.spring.module.security.repo.ApiRepo;
 import com.github.ifrankwang.spring.module.security.service.ApiService;
+import com.github.ifrankwang.spring.util.UserInfoHolder;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,8 +30,7 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public ApiEntity create(ApiEntity entity) {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        final UserEntity operator = (UserEntity) authentication.getDetails();
+        final UserEntity operator = UserInfoHolder.getUserInfo();
         entity.setCreator(operator);
         entity.setCreateTime(LocalDateTime.now());
         return repo.save(entity);

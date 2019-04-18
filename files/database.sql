@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 16/04/2019 18:33:04
+ Date: 18/04/2019 18:05:45
 */
 
 SET NAMES utf8mb4;
@@ -23,16 +23,15 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `api`;
 CREATE TABLE `api`
 (
-    `id`           bigint(32)                  NOT NULL AUTO_INCREMENT,
-    `method`       varchar(8) COLLATE utf8_bin NOT NULL COMMENT '请求方式',
-    `path`         text COLLATE utf8_bin       NOT NULL COMMENT '请求接口路径',
-    `name`         text COLLATE utf8_bin       NOT NULL COMMENT '接口名称',
-    `authority_id` bigint(32) DEFAULT NULL COMMENT '涉及到的权限id',
-    `creator_id`   bigint(32)                  NOT NULL COMMENT '创建者',
-    `create_time`  datetime                    NOT NULL COMMENT '创建时间',
+    `id`          bigint(32)                  NOT NULL AUTO_INCREMENT,
+    `method`      varchar(8) COLLATE utf8_bin NOT NULL COMMENT '请求方式',
+    `path`        text COLLATE utf8_bin       NOT NULL COMMENT '请求接口路径',
+    `name`        text COLLATE utf8_bin COMMENT '接口名称',
+    `creator_id`  bigint(32)                  NOT NULL COMMENT '创建者',
+    `create_time` datetime                    NOT NULL COMMENT '创建时间',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
+  AUTO_INCREMENT = 10
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='接口表';
 
@@ -41,13 +40,23 @@ CREATE TABLE `api`
 -- ----------------------------
 BEGIN;
 INSERT INTO `api`
-VALUES (1, 'GET', '/api/resource/list', '获取模块', 1, 1, '2019-04-12 10:00:41');
+VALUES (1, 'PUT', '/api', '更新接口信息', 1, '2019-04-18 17:59:39');
 INSERT INTO `api`
-VALUES (2, 'POST', '/api/resource', '创建模块', 2, 1, '2019-04-12 10:00:41');
+VALUES (2, 'GET', '/api/list', '获取接口列表（分页）', 1, '2019-04-18 17:59:39');
 INSERT INTO `api`
-VALUES (3, 'PUT', '/api/resource/{id}', '更新模块', 3, 1, '2019-04-12 10:00:41');
+VALUES (3, 'POST', '/api/login', '用户名密码登录', 1, '2019-04-18 17:59:39');
 INSERT INTO `api`
-VALUES (4, 'DELETE', '/api/resource/{id}', '删除模块', 4, 1, '2019-04-12 10:00:41');
+VALUES (4, 'POST', '/api/resource', '创建一个新的资源/模块', 1, '2019-04-18 17:59:39');
+INSERT INTO `api`
+VALUES (5, 'GET', '/api/resource/list', '获取全部模块列表', 1, '2019-04-18 17:59:39');
+INSERT INTO `api`
+VALUES (6, 'PUT', '/api/resource/{id}', '更新模块信息', 1, '2019-04-18 17:59:39');
+INSERT INTO `api`
+VALUES (7, 'DELETE', '/api/resource/{id}', '删除模块', 1, '2019-04-18 17:59:39');
+INSERT INTO `api`
+VALUES (8, 'GET', '/api/token', '更新Token', 1, '2019-04-18 17:59:39');
+INSERT INTO `api`
+VALUES (9, 'GET', '/api/user/list', '获取用户列表', 1, '2019-04-18 17:59:39');
 COMMIT;
 
 -- ----------------------------
@@ -59,9 +68,10 @@ CREATE TABLE `authority`
     `id`          bigint(32)                    NOT NULL AUTO_INCREMENT,
     `resource_id` bigint(32)                    NOT NULL COMMENT '资源id',
     `operation`   varchar(128) COLLATE utf8_bin NOT NULL COMMENT '操作',
+    `api_id`      bigint(32)                    NOT NULL COMMENT '对应接口id',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 5
+  AUTO_INCREMENT = 7
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='权限表';
 
@@ -70,13 +80,17 @@ CREATE TABLE `authority`
 -- ----------------------------
 BEGIN;
 INSERT INTO `authority`
-VALUES (1, 1, 'GET');
+VALUES (1, 1, 'CREATE', 4);
 INSERT INTO `authority`
-VALUES (2, 1, 'CREATE');
+VALUES (2, 1, 'GET', 5);
 INSERT INTO `authority`
-VALUES (3, 1, 'UPDATE');
+VALUES (3, 1, 'UPDATE', 6);
 INSERT INTO `authority`
-VALUES (4, 1, 'DELETE');
+VALUES (4, 1, 'DELETE', 7);
+INSERT INTO `authority`
+VALUES (5, 2, 'UPDATE', 1);
+INSERT INTO `authority`
+VALUES (6, 2, 'GET', 2);
 COMMIT;
 
 -- ----------------------------
@@ -133,7 +147,7 @@ CREATE TABLE `resource`
     `protected`   tinyint(1)                    NOT NULL DEFAULT '0' COMMENT '是否受保护（无法删除、更新）',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 14
+  AUTO_INCREMENT = 3
   DEFAULT CHARSET = utf8
   COLLATE = utf8_bin COMMENT ='权限资源表';
 
@@ -142,7 +156,9 @@ CREATE TABLE `resource`
 -- ----------------------------
 BEGIN;
 INSERT INTO `resource`
-VALUES (1, '模块', 'resource', 1, '2019-04-12 09:55:29', NULL, 1);
+VALUES (1, '资源', 'resource', 1, '2019-04-18 18:03:13', NULL, 1);
+INSERT INTO `resource`
+VALUES (2, '接口', 'api', 1, '2019-04-18 18:03:25', NULL, 1);
 COMMIT;
 
 -- ----------------------------
