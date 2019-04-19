@@ -3,6 +3,7 @@ package com.github.ifrankwang.spring.module.security.service;
 import com.github.ifrankwang.spring.module.security.entity.GroupEntity;
 import com.github.ifrankwang.spring.module.security.entity.RoleEntity;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
+import com.github.ifrankwang.spring.module.security.exception.RoleNotFoundException;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
 
@@ -12,6 +13,14 @@ import java.util.List;
  * @author Frank Wang
  */
 public interface RoleService {
+    /**
+     * 获取指定的角色实体类对象
+     *
+     * @param id id
+     * @return 角色实体类对象
+     */
+    RoleEntity findById(Long id) throws RoleNotFoundException;
+
     /**
      * 分页获取角色列表
      *

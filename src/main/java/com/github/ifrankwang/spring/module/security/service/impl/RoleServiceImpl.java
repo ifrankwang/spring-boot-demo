@@ -3,7 +3,9 @@ package com.github.ifrankwang.spring.module.security.service.impl;
 import com.github.ifrankwang.spring.module.security.entity.GroupEntity;
 import com.github.ifrankwang.spring.module.security.entity.RoleEntity;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
+import com.github.ifrankwang.spring.module.security.exception.RoleNotFoundException;
 import com.github.ifrankwang.spring.module.security.query.RoleQuery;
+import com.github.ifrankwang.spring.module.security.repo.RoleRepo;
 import com.github.ifrankwang.spring.module.security.service.RoleService;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
@@ -16,10 +18,17 @@ import java.util.List;
  */
 @Service
 public class RoleServiceImpl implements RoleService {
+    private final RoleRepo repo;
     private final RoleQuery query;
 
-    public RoleServiceImpl(RoleQuery query) {
+    public RoleServiceImpl(RoleRepo repo, RoleQuery query) {
+        this.repo = repo;
         this.query = query;
+    }
+
+    @Override
+    public RoleEntity findById(Long id) throws RoleNotFoundException {
+        return repo.findById(id).orElseThrow(RoleNotFoundException::new);
     }
 
     @Override

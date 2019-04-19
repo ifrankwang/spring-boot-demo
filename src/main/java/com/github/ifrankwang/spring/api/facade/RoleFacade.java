@@ -4,6 +4,8 @@ import com.github.ifrankwang.spring.api.dto.security.RoleDto;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
@@ -25,4 +27,12 @@ public interface RoleFacade {
      * @return 组内角色或非组内角色列表
      */
     Page<RoleDto> findByGeneric(Pageable pageable, Boolean generic);
+
+    /**
+     * 获取角色的权限id列表
+     *
+     * @param roleId 角色id
+     * @return 角色的权限id列表
+     */
+    List<Long> getRoleAuthorityIdList(Long roleId);
 }
