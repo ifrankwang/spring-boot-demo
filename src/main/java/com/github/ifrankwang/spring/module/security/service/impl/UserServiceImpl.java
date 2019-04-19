@@ -2,11 +2,12 @@ package com.github.ifrankwang.spring.module.security.service.impl;
 
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
+import com.github.ifrankwang.spring.module.security.query.UserQuery;
 import com.github.ifrankwang.spring.module.security.repo.UserRepo;
 import com.github.ifrankwang.spring.module.security.service.UserService;
+import com.github.ifrankwang.utils.page.Page;
+import com.github.ifrankwang.utils.page.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author Frank Wang
@@ -14,9 +15,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepo repo;
+    private final UserQuery query;
 
-    public UserServiceImpl(UserRepo repo) {
+    public UserServiceImpl(UserRepo repo, UserQuery query) {
         this.repo = repo;
+        this.query = query;
     }
 
     @Override
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserEntity> findAll() {
-        return repo.findAll();
+    public Page<UserEntity> findAll(Pageable pageable) {
+        return query.findAll(pageable);
     }
 }

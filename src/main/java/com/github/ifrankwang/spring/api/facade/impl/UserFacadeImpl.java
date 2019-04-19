@@ -5,9 +5,9 @@ import com.github.ifrankwang.spring.api.dto.security.UserDto;
 import com.github.ifrankwang.spring.api.facade.UserFacade;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.spring.module.security.service.UserService;
+import com.github.ifrankwang.utils.page.Page;
+import com.github.ifrankwang.utils.page.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author Frank Wang
@@ -21,8 +21,8 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
-    public List<UserDto> getUserList() {
-        final List<UserEntity> entities = userService.findAll();
-        return UserConverter.INSTANCE.toDtoList(entities);
+    public Page<UserDto> getUserList(Pageable pageable) {
+        final Page<UserEntity> entities = userService.findAll(pageable);
+        return UserConverter.INSTANCE.toDto(entities);
     }
 }

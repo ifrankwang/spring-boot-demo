@@ -1,14 +1,16 @@
 package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
+import com.github.ifrankwang.spring.api.dto.PageRequest;
+import com.github.ifrankwang.spring.api.dto.security.UserDto;
 import com.github.ifrankwang.spring.api.facade.UserFacade;
+import com.github.ifrankwang.utils.page.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_USER;
 import static com.github.ifrankwang.spring.api.dto.AppResponse.success;
@@ -29,7 +31,7 @@ public class UserController {
 
     @ApiOperation("获取用户列表")
     @GetMapping("/list")
-    public AppResponse<List> getUserList() {
-        return success(facade.getUserList());
+    public AppResponse<Page<UserDto>> getUserList(@Validated PageRequest request) {
+        return success(facade.getUserList(request));
     }
 }
