@@ -3,16 +3,14 @@ package com.github.ifrankwang.spring.api.controller.security;
 import com.github.ifrankwang.spring.api.dto.AppResponse;
 import com.github.ifrankwang.spring.api.dto.PageRequest;
 import com.github.ifrankwang.spring.api.dto.security.RoleDto;
+import com.github.ifrankwang.spring.api.dto.security.authority.UpdateAuthorityRequest;
 import com.github.ifrankwang.spring.api.facade.RoleFacade;
 import com.github.ifrankwang.utils.page.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,5 +43,12 @@ public class RoleController {
     @GetMapping("/{id}/authority/id-list")
     public AppResponse<List<Long>> getRoleAuthorityIdList(@PathVariable Long id) {
         return success(facade.getRoleAuthorityIdList(id));
+    }
+
+    @ApiOperation("更新角色权限id列表")
+    @PutMapping("/{id}/authority/id-list")
+    public AppResponse updateRoleAuthorityIdList(@PathVariable Long id, UpdateAuthorityRequest request) {
+        facade.updateRoleAuthorityIdList(id, request.getAuthorityIdList());
+        return success();
     }
 }

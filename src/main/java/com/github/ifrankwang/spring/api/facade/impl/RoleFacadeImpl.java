@@ -1,10 +1,12 @@
 package com.github.ifrankwang.spring.api.facade.impl;
 
+import com.github.ifrankwang.spring.api.converter.security.AuthorityConverter;
 import com.github.ifrankwang.spring.api.converter.security.RoleConverter;
 import com.github.ifrankwang.spring.api.dto.security.RoleDto;
 import com.github.ifrankwang.spring.api.facade.RoleFacade;
 import com.github.ifrankwang.spring.module.security.entity.AuthorityEntity;
 import com.github.ifrankwang.spring.module.security.entity.RoleEntity;
+import com.github.ifrankwang.spring.module.security.exception.RoleNotFoundException;
 import com.github.ifrankwang.spring.module.security.service.RoleService;
 import com.github.ifrankwang.utils.list.ListUtils;
 import com.github.ifrankwang.utils.page.Page;
@@ -37,8 +39,15 @@ public class RoleFacadeImpl implements RoleFacade {
     }
 
     @Override
-    public List<Long> getRoleAuthorityIdList(Long roleId) {
+    public List<Long> getRoleAuthorityIdList(Long roleId) throws RoleNotFoundException {
         final RoleEntity roleEntity = roleService.findById(roleId);
         return ListUtils.map(roleEntity.getAuthorities(), AuthorityEntity::getId);
+    }
+
+    @Override
+    public void updateRoleAuthorityIdList(Long roleId, List<Long> authorityIdList) throws RoleNotFoundException {
+        final RoleEntity roleEntity = roleService.findById(roleId);
+        final List<AuthorityEntity> authorityEntities = AuthorityConverter.INSTANCE.toEntities(authorityIdList);
+        roleEntity.setAuthorities(authorityEntities);
     }
 }

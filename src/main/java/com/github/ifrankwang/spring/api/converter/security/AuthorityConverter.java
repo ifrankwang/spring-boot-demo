@@ -6,10 +6,12 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 /**
  * @author Frank Wang
  */
-@Mapper(uses = {ApiIdConverter.class})
+@Mapper(uses = {ApiIdConverter.class, AuthorityIdConverter.class})
 public interface AuthorityConverter {
     AuthorityConverter INSTANCE = Mappers.getMapper(AuthorityConverter.class);
 
@@ -17,4 +19,6 @@ public interface AuthorityConverter {
     @Mapping(target = "resource", ignore = true)
     @Mapping(target = "api", source = "apiId")
     AuthorityEntity toEntity(BaseAuthorityDto baseDto);
+
+    List<AuthorityEntity> toEntities(List<Long> id);
 }
