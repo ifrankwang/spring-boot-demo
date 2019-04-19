@@ -4,6 +4,7 @@ import com.github.ifrankwang.spring.api.dto.AppResponse;
 import com.github.ifrankwang.spring.api.dto.PageRequest;
 import com.github.ifrankwang.spring.api.dto.security.ApiDto;
 import com.github.ifrankwang.spring.api.facade.ApiFacade;
+import com.github.ifrankwang.spring.module.security.annotation.Authorize;
 import com.github.ifrankwang.utils.page.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +36,7 @@ public class ApiController {
 
     @ApiOperation("更新接口信息")
     @PutMapping
+    @Authorize
     public AppResponse updateApis() {
         facade.updateApis();
         return success();
@@ -42,6 +44,7 @@ public class ApiController {
 
     @ApiOperation("获取接口列表（分页）")
     @GetMapping("/list")
+    @Authorize
     public AppResponse<Page<ApiDto>> getApiPage(@Validated PageRequest request) {
         return success(facade.getApiPage(request));
     }
