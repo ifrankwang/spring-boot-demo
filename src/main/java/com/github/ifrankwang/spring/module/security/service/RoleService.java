@@ -54,4 +54,12 @@ public interface RoleService {
      * @return 业务类角色
      */
     List<RoleEntity> findBusinessRoleOfUser(UserEntity user, GroupEntity group);
+
+    /**
+     * 创建角色
+     *
+     * @param entity 要创建的角色对象
+     * @return 角色实体类对象
+     */
+    RoleEntity create(RoleEntity entity);
 }

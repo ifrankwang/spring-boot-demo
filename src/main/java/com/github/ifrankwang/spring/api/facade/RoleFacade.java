@@ -1,6 +1,7 @@
 package com.github.ifrankwang.spring.api.facade;
 
-import com.github.ifrankwang.spring.api.dto.security.RoleDto;
+import com.github.ifrankwang.spring.api.dto.security.role.BaseRoleDto;
+import com.github.ifrankwang.spring.api.dto.security.role.RoleDto;
 import com.github.ifrankwang.spring.module.security.exception.RoleNotFoundException;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
@@ -46,4 +47,12 @@ public interface RoleFacade {
      * @throws RoleNotFoundException 没有找到角色
      */
     void updateRoleAuthorityIdList(Long roleId, List<Long> authorityIdList) throws RoleNotFoundException;
+
+    /**
+     * 新建角色
+     *
+     * @param baseRoleDto 请求参数
+     * @return 新创建的角色
+     */
+    RoleDto createRole(BaseRoleDto baseRoleDto);
 }

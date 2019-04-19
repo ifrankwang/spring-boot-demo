@@ -2,7 +2,8 @@ package com.github.ifrankwang.spring.api.facade.impl;
 
 import com.github.ifrankwang.spring.api.converter.security.AuthorityConverter;
 import com.github.ifrankwang.spring.api.converter.security.RoleConverter;
-import com.github.ifrankwang.spring.api.dto.security.RoleDto;
+import com.github.ifrankwang.spring.api.dto.security.role.BaseRoleDto;
+import com.github.ifrankwang.spring.api.dto.security.role.RoleDto;
 import com.github.ifrankwang.spring.api.facade.RoleFacade;
 import com.github.ifrankwang.spring.module.security.entity.AuthorityEntity;
 import com.github.ifrankwang.spring.module.security.entity.RoleEntity;
@@ -49,5 +50,12 @@ public class RoleFacadeImpl implements RoleFacade {
         final RoleEntity roleEntity = roleService.findById(roleId);
         final List<AuthorityEntity> authorityEntities = AuthorityConverter.INSTANCE.toEntities(authorityIdList);
         roleEntity.setAuthorities(authorityEntities);
+    }
+
+    @Override
+    public RoleDto createRole(BaseRoleDto baseRoleDto) {
+        RoleEntity entity = RoleConverter.INSTANCE.toEntity(baseRoleDto);
+        entity = roleService.create(entity);
+        return RoleConverter.INSTANCE.toDto(entity);
     }
 }

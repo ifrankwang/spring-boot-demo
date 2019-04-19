@@ -2,8 +2,9 @@ package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
 import com.github.ifrankwang.spring.api.dto.PageRequest;
-import com.github.ifrankwang.spring.api.dto.security.RoleDto;
 import com.github.ifrankwang.spring.api.dto.security.authority.UpdateAuthorityRequest;
+import com.github.ifrankwang.spring.api.dto.security.role.BaseRoleDto;
+import com.github.ifrankwang.spring.api.dto.security.role.RoleDto;
 import com.github.ifrankwang.spring.api.facade.RoleFacade;
 import com.github.ifrankwang.utils.page.Page;
 import io.swagger.annotations.Api;
@@ -50,5 +51,11 @@ public class RoleController {
     public AppResponse updateRoleAuthorityIdList(@PathVariable Long id, UpdateAuthorityRequest request) {
         facade.updateRoleAuthorityIdList(id, request.getAuthorityIdList());
         return success();
+    }
+
+    @ApiOperation("新增角色")
+    @PostMapping
+    public AppResponse<RoleDto> createRole(@Validated @RequestBody BaseRoleDto request) {
+        return success(facade.createRole(request));
     }
 }

@@ -7,10 +7,12 @@ import com.github.ifrankwang.spring.module.security.exception.RoleNotFoundExcept
 import com.github.ifrankwang.spring.module.security.query.RoleQuery;
 import com.github.ifrankwang.spring.module.security.repo.RoleRepo;
 import com.github.ifrankwang.spring.module.security.service.RoleService;
+import com.github.ifrankwang.spring.util.UserInfoHolder;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -49,5 +51,12 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public List<RoleEntity> findBusinessRoleOfUser(UserEntity user, GroupEntity group) {
         return query.findBusinessRoleOfUser(user, group);
+    }
+
+    @Override
+    public RoleEntity create(RoleEntity entity) {
+        entity.setCreator(UserInfoHolder.getUserInfo());
+        entity.setCreateTime(LocalDateTime.now());
+        return repo.save(entity);
     }
 }
