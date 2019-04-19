@@ -96,7 +96,7 @@ COMMIT;
 -- ----------------------------
 -- Table structure for group
 -- ----------------------------
-DROP TABLE IF EXISTS `group`;
+DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `group`
 (
     `id`         bigint(32)                    NOT NULL AUTO_INCREMENT,

@@ -15,7 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
  * @author Frank Wang
  */
 @Data
-@Entity(name = "group")
+@Entity(name = "groups")
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = {"users", "creator"})
 public class GroupEntity {
