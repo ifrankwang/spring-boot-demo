@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * @author Frank Wang
  */
-public interface ApiService {
+public interface ApiService extends BusinessGetter {
     /**
      * 创建新的接口实体类对象
      *
@@ -26,6 +26,16 @@ public interface ApiService {
      * @return 分页接口列表
      */
     Page<ApiEntity> findAll(Pageable pageable);
+
+    /**
+     * 获取指定接口实体类对象
+     *
+     * @param id 实体类对象id
+     * @return 接口实体类对象
+     * @throws ApiNotFoundException 没有找到
+     */
+    @Override
+    ApiEntity findById(Long id) throws ApiNotFoundException;
 
     /**
      * 根据api请求方法和路径获取api实体类对象
@@ -46,4 +56,11 @@ public interface ApiService {
      * @throws ApiNotFoundException 没有找到对应实体类对象
      */
     Optional<ApiEntity> findOptionalByMethodAndPath(ApiMethod method, String path);
+
+    /**
+     * 删除接口信息
+     *
+     * @param entity 接口实体类对象
+     */
+    void delete(ApiEntity entity);
 }

@@ -8,6 +8,7 @@ import com.github.ifrankwang.spring.api.facade.ApiFacade;
 import com.github.ifrankwang.spring.exception.InternalServerError;
 import com.github.ifrankwang.spring.module.security.entity.ApiEntity;
 import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
+import com.github.ifrankwang.spring.module.security.exception.ApiNotFoundException;
 import com.github.ifrankwang.spring.module.security.service.ApiService;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
@@ -80,5 +81,11 @@ public class ApiFacadeImpl implements ApiFacade {
     public Page<ApiDto> getApiPage(Pageable pageable) {
         final Page<ApiEntity> apiEntityPage = apiService.findAll(pageable);
         return ApiConverter.INSTANCE.toPage(apiEntityPage);
+    }
+
+    @Override
+    public void deleteApi(Long id) throws ApiNotFoundException {
+        final ApiEntity entity = apiService.findById(id);
+        apiService.delete(entity);
     }
 }

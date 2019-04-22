@@ -42,6 +42,11 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
+    public ApiEntity findById(Long id) throws ApiNotFoundException {
+        return repo.findById(id).orElseThrow(ApiNotFoundException::new);
+    }
+
+    @Override
     public ApiEntity findByMethodAndPath(ApiMethod method, String path) throws ApiNotFoundException {
         return repo.findFirstByMethodAndPath(method, path).orElseThrow(ApiNotFoundException::new);
     }
@@ -49,5 +54,10 @@ public class ApiServiceImpl implements ApiService {
     @Override
     public Optional<ApiEntity> findOptionalByMethodAndPath(ApiMethod method, String path) {
         return repo.findFirstByMethodAndPath(method, path);
+    }
+
+    @Override
+    public void delete(ApiEntity entity) {
+        repo.delete(entity);
     }
 }
