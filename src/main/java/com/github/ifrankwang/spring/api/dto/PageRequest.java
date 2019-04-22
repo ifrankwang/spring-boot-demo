@@ -26,6 +26,6 @@ public class PageRequest implements Pageable {
     @Override
     @ApiModelProperty(hidden = true)
     public int getOffset() {
-        return page - 1;
+        return (page - 1) * size;
     }
 }
