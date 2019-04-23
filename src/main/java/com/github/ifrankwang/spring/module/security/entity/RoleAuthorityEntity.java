@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -24,9 +25,9 @@ public class RoleAuthorityEntity {
     @Enumerated(STRING)
     private AccessLevel accessLevel;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     private RoleEntity role;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     private AuthorityEntity authority;
 }

@@ -4,12 +4,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -19,7 +21,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = {"authorities", "creator"})
 @Entity(name = "role")
-public class RoleEntity {
+public class RoleEntity implements Business {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -27,11 +29,17 @@ public class RoleEntity {
     private Boolean generic = false;
     private LocalDateTime createTime = now();
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn
     private UserEntity creator;
 
     @OneToMany
     @JoinTable(name = "role_authority", inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<AuthorityEntity> authorities = new ArrayList<>();
+
+    @Nullable
+    @Override
+    public GroupEntity getGroup() {
+        return null;
+    }
 }

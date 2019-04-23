@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -19,7 +20,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder
 @Entity(name = "api")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"authority", "creator"})
+@ToString(exclude = {"creator"})
 public class ApiEntity implements Business {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -30,10 +31,7 @@ public class ApiEntity implements Business {
     private String name;
     private LocalDateTime createTime;
 
-    @OneToOne(mappedBy = "api")
-    private AuthorityEntity authority;
-
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn
     private UserEntity creator;
 

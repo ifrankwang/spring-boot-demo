@@ -14,6 +14,7 @@ import java.util.List;
 import static java.time.LocalDateTime.now;
 import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.CascadeType.REFRESH;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -34,11 +35,11 @@ public class ResourceEntity implements Business, BidirectionalRelation {
     @Column(name = "protected")
     private Boolean protect;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn
     private UserEntity creator;
 
-    @ManyToOne(cascade = REFRESH)
+    @ManyToOne(cascade = REFRESH, fetch = LAZY)
     private ResourceEntity parent;
 
     @OneToMany(cascade = {PERSIST, REFRESH}, orphanRemoval = true, mappedBy = "parent")

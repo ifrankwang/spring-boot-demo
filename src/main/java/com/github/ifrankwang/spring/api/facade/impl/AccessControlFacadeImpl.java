@@ -34,6 +34,7 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
     private final ApiService apiService;
     private final UserService userService;
     private final RoleService roleService;
+    private final AuthorityService authorityService;
     private final RoleAuthorityService roleAuthorityService;
     private final SystemConfigService systemConfigService;
 
@@ -42,10 +43,11 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-    public AccessControlFacadeImpl(ApiService apiService, UserService userService, RoleService roleService, RoleAuthorityService roleAuthorityService, SystemConfigService systemConfigService) {
+    public AccessControlFacadeImpl(ApiService apiService, UserService userService, RoleService roleService, AuthorityService authorityService, RoleAuthorityService roleAuthorityService, SystemConfigService systemConfigService) {
         this.apiService = apiService;
         this.userService = userService;
         this.roleService = roleService;
+        this.authorityService = authorityService;
         this.roleAuthorityService = roleAuthorityService;
         this.systemConfigService = systemConfigService;
     }
@@ -125,13 +127,13 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
     }
 
     private List<RoleAuthorityEntity> getGenericRoleAuthorities(ApiEntity api, UserEntity user) {
-        final AuthorityEntity requiredAuthority = api.getAuthority();
+        final AuthorityEntity requiredAuthority = authorityService.findByApi(api);
         final List<RoleEntity> userRoles = roleService.findGenericRoleOfUser(user);
         return roleAuthorityService.findByRolesAndAuthority(userRoles, requiredAuthority);
     }
 
     private List<RoleAuthorityEntity> getBusinessRoleAuthorities(Business business, ApiEntity api, UserEntity user) {
-        final AuthorityEntity requiredAuthority = api.getAuthority();
+        final AuthorityEntity requiredAuthority = authorityService.findByApi(api);
         final GroupEntity requiredGroup = business.getGroup();
         final List<RoleEntity> userRoles;
         if (null != requiredGroup) {

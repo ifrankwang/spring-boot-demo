@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -28,7 +29,7 @@ public class UserEntity implements PasswordHolder {
     private LocalDateTime createTime = now();
     private Boolean enabled = true;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn
     private UserEntity creator;
 }

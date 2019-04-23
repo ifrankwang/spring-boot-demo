@@ -12,13 +12,14 @@ import java.util.List;
 /**
  * @author Frank Wang
  */
-public interface RoleService {
+public interface RoleService extends BusinessGetter {
     /**
      * 获取指定的角色实体类对象
      *
      * @param id id
      * @return 角色实体类对象
      */
+    @Override
     RoleEntity findById(Long id) throws RoleNotFoundException;
 
     /**

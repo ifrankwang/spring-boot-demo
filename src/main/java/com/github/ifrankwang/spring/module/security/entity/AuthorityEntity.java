@@ -8,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 
 import static javax.persistence.EnumType.STRING;
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -24,10 +25,10 @@ public class AuthorityEntity {
     @Enumerated(STRING)
     private Operations operation;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     private ResourceEntity resource;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn
     private ApiEntity api;
 }

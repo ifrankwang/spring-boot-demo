@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -17,7 +18,7 @@ public class SystemConfigEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn
     private UserEntity systemAdmin;
 }

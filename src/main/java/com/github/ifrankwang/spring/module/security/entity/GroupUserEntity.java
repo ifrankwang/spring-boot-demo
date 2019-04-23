@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.annotation.Nullable;
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -22,16 +23,16 @@ public class GroupUserEntity {
     private Long id;
 
     @Nullable
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     private GroupEntity group;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     private UserEntity user;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     private RoleEntity role;
 
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn
     private UserEntity creator;
 }

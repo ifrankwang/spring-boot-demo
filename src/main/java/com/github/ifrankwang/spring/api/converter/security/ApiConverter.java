@@ -5,6 +5,7 @@ import com.github.ifrankwang.spring.module.security.entity.ApiEntity;
 import com.github.ifrankwang.utils.page.Page;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -17,6 +18,8 @@ public interface ApiConverter {
     ApiDto toDto(ApiEntity entity);
 
     @InheritInverseConfiguration
+    @Mapping(target = "createTime", ignore = true)
+    @Mapping(target = "creator", ignore = true)
     ApiEntity toEntity(ApiDto dto);
 
     Page<ApiDto> toPage(Page<ApiEntity> entityPage);
