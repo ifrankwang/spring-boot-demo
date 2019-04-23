@@ -34,4 +34,12 @@ public interface UserService {
      * @return 所有用户
      */
     Page<UserEntity> findAll(Pageable pageable);
+
+    /**
+     * 创建用户
+     *
+     * @param entity 未保存的用户实体对象
+     * @return 已保存的用户实体对象
+     */
+    UserEntity create(UserEntity entity);
 }

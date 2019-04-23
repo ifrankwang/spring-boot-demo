@@ -1,4 +1,4 @@
-package com.github.ifrankwang.spring.api.dto.security;
+package com.github.ifrankwang.spring.api.dto.security.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
