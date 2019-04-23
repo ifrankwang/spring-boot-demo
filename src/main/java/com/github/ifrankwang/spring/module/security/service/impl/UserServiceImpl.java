@@ -51,4 +51,10 @@ public class UserServiceImpl implements UserService {
         entity.using(passwordEncoder).encryptPassword();
         return repo.save(entity);
     }
+
+    @Override
+    public UserEntity update(UserEntity entity) {
+        entity.using(passwordEncoder).encryptPassword();
+        return repo.save(entity);
+    }
 }

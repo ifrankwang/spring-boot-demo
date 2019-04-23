@@ -40,4 +40,12 @@ public class UserFacadeImpl implements UserFacade {
         final UserEntity entity = userService.findById(userId);
         entity.setEnabled(!entity.getEnabled());
     }
+
+    @Override
+    public UserDto updateUser(Long userId, BaseUserDto baseUserDto) throws UserNotFoundException {
+        UserEntity entity = userService.findById(userId);
+        entity = UserConverter.INSTANCE.update(entity, baseUserDto);
+        entity = userService.update(entity);
+        return UserConverter.INSTANCE.toDto(entity);
+    }
 }

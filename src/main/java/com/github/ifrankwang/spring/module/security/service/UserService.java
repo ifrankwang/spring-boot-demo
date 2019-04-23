@@ -43,4 +43,12 @@ public interface UserService extends BusinessGetter {
      * @return 已保存的用户实体对象
      */
     UserEntity create(UserEntity entity);
+
+    /**
+     * 更新用户信息
+     *
+     * @param entity 新用户信息
+     * @return 更新后的用户信息
+     */
+    UserEntity update(UserEntity entity);
 }

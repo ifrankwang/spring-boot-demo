@@ -6,6 +6,7 @@ import com.github.ifrankwang.spring.module.security.entity.UserEntity;
 import com.github.ifrankwang.utils.page.Page;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -27,4 +28,9 @@ public interface UserConverter {
     @Mapping(target = "creator", ignore = true)
     @Mapping(target = "createTime", ignore = true)
     UserEntity toEntity(BaseUserDto baseUserDto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "creator", ignore = true)
+    @Mapping(target = "createTime", ignore = true)
+    UserEntity update(@MappingTarget UserEntity entity, BaseUserDto baseUserDto);
 }

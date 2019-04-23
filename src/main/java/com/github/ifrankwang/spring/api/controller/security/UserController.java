@@ -41,7 +41,7 @@ public class UserController {
     @ApiOperation("创建用户")
     @PostMapping
     @Authorize
-    public AppResponse<UserDto> createUser(@Validated BaseUserDto request) {
+    public AppResponse<UserDto> createUser(@Validated @RequestBody BaseUserDto request) {
         return success(facade.createUser(request));
     }
 
@@ -51,5 +51,12 @@ public class UserController {
     public AppResponse suspendOrActiveUser(@PathVariable Long id) {
         facade.suspendOrActiveUser(id);
         return success();
+    }
+
+    @ApiOperation("更新用户信息")
+    @PostMapping("/{id}")
+    @BusinessAuthorize(id = "#id", getterClass = UserService.class)
+    public AppResponse<UserDto> updateUser(@PathVariable Long id, @Validated @RequestBody BaseUserDto request) {
+        return success(facade.updateUser(id, request));
     }
 }

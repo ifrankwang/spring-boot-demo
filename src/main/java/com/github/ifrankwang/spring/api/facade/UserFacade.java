@@ -31,6 +31,17 @@ public interface UserFacade {
      * 停用用户
      *
      * @param userId 用户id
+     * @throws UserNotFoundException 没有找到用户
      */
     void suspendOrActiveUser(Long userId) throws UserNotFoundException;
+
+    /**
+     * 更新用户信息
+     *
+     * @param userId      用户id
+     * @param baseUserDto 更新信息
+     * @return 更新后的用户信息
+     * @throws UserNotFoundException 没有找到用户
+     */
+    UserDto updateUser(Long userId, BaseUserDto baseUserDto) throws UserNotFoundException;
 }
