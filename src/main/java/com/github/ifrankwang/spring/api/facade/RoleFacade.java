@@ -55,4 +55,11 @@ public interface RoleFacade {
      * @return 新创建的角色
      */
     RoleDto createRole(BaseRoleDto baseRoleDto);
+
+    /**
+     * 删除角色
+     *
+     * @param roleId 角色id
+     */
+    void deleteRole(Long roleId) throws RoleNotFoundException;
 }

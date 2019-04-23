@@ -63,4 +63,11 @@ public interface RoleService extends BusinessGetter {
      * @return 角色实体类对象
      */
     RoleEntity create(RoleEntity entity);
+
+    /**
+     * 删除角色
+     *
+     * @param entity 角色实体对象
+     */
+    void delete(RoleEntity entity);
 }

@@ -59,4 +59,9 @@ public class RoleServiceImpl implements RoleService {
         entity.setCreateTime(LocalDateTime.now());
         return repo.save(entity);
     }
+
+    @Override
+    public void delete(RoleEntity entity) {
+        repo.delete(entity);
+    }
 }

@@ -65,4 +65,12 @@ public class RoleController {
     public AppResponse<RoleDto> createRole(@Validated @RequestBody BaseRoleDto request) {
         return success(facade.createRole(request));
     }
+
+    @ApiOperation("删除角色")
+    @DeleteMapping("/{id}")
+    @BusinessAuthorize(id = "#id", getterClass = RoleService.class)
+    public AppResponse deleteRole(@PathVariable Long id) {
+        facade.deleteRole(id);
+        return success();
+    }
 }
