@@ -6,6 +6,9 @@ import com.github.ifrankwang.spring.api.dto.security.authority.UpdateAuthorityRe
 import com.github.ifrankwang.spring.api.dto.security.role.BaseRoleDto;
 import com.github.ifrankwang.spring.api.dto.security.role.RoleDto;
 import com.github.ifrankwang.spring.api.facade.RoleFacade;
+import com.github.ifrankwang.spring.module.security.annotation.Authorize;
+import com.github.ifrankwang.spring.module.security.annotation.BusinessAuthorize;
+import com.github.ifrankwang.spring.module.security.service.RoleService;
 import com.github.ifrankwang.utils.page.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,18 +39,21 @@ public class RoleController {
 
     @ApiOperation("获取角色列表（分页）")
     @GetMapping("/list")
+    @Authorize
     public AppResponse<Page<RoleDto>> getRolePage(@Validated PageRequest request, Boolean generic) {
         return success(facade.findByGeneric(request, generic));
     }
 
     @ApiOperation("获取角色权限id列表")
     @GetMapping("/{id}/authority/id-list")
+    @BusinessAuthorize(id = "#id", getterClass = RoleService.class)
     public AppResponse<List<Long>> getRoleAuthorityIdList(@PathVariable Long id) {
         return success(facade.getRoleAuthorityIdList(id));
     }
 
     @ApiOperation("更新角色权限id列表")
     @PutMapping("/{id}/authority/id-list")
+    @BusinessAuthorize(id = "#id", getterClass = RoleService.class)
     public AppResponse updateRoleAuthorityIdList(@PathVariable Long id, UpdateAuthorityRequest request) {
         facade.updateRoleAuthorityIdList(id, request.getAuthorityIdList());
         return success();
@@ -55,6 +61,7 @@ public class RoleController {
 
     @ApiOperation("新增角色")
     @PostMapping
+    @Authorize
     public AppResponse<RoleDto> createRole(@Validated @RequestBody BaseRoleDto request) {
         return success(facade.createRole(request));
     }
