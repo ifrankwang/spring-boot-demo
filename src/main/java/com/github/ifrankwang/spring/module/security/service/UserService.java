@@ -8,7 +8,7 @@ import com.github.ifrankwang.utils.page.Pageable;
 /**
  * @author Frank Wang
  */
-public interface UserService {
+public interface UserService extends BusinessGetter {
     /**
      * 根据邮箱获取用户实体对象
      *
@@ -25,6 +25,7 @@ public interface UserService {
      * @return 指定用户
      * @throws UserNotFoundException 没有找到用户
      */
+    @Override
     UserEntity findById(Long id) throws UserNotFoundException;
 
     /**

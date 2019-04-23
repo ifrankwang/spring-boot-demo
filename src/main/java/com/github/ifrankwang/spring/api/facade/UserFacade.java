@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.api.facade;
 
 import com.github.ifrankwang.spring.api.dto.security.user.BaseUserDto;
 import com.github.ifrankwang.spring.api.dto.security.user.UserDto;
+import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
 
@@ -25,4 +26,11 @@ public interface UserFacade {
      * @return 新建的用户
      */
     UserDto createUser(BaseUserDto baseUserDto);
+
+    /**
+     * 停用用户
+     *
+     * @param userId 用户id
+     */
+    void suspendOrActiveUser(Long userId) throws UserNotFoundException;
 }

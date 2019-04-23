@@ -5,6 +5,7 @@ import com.github.ifrankwang.spring.api.dto.security.user.BaseUserDto;
 import com.github.ifrankwang.spring.api.dto.security.user.UserDto;
 import com.github.ifrankwang.spring.api.facade.UserFacade;
 import com.github.ifrankwang.spring.module.security.entity.UserEntity;
+import com.github.ifrankwang.spring.module.security.exception.UserNotFoundException;
 import com.github.ifrankwang.spring.module.security.service.UserService;
 import com.github.ifrankwang.utils.page.Page;
 import com.github.ifrankwang.utils.page.Pageable;
@@ -32,5 +33,11 @@ public class UserFacadeImpl implements UserFacade {
         UserEntity entity = UserConverter.INSTANCE.toEntity(baseUserDto);
         entity = userService.create(entity);
         return UserConverter.INSTANCE.toDto(entity);
+    }
+
+    @Override
+    public void suspendOrActiveUser(Long userId) throws UserNotFoundException {
+        final UserEntity entity = userService.findById(userId);
+        entity.setEnabled(!entity.getEnabled());
     }
 }

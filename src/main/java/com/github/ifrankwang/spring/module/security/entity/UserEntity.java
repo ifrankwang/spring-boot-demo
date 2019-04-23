@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -19,7 +20,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "creator")
 @Entity(name = "user")
-public class UserEntity implements PasswordHolder {
+public class UserEntity implements PasswordHolder, Business {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -32,4 +33,10 @@ public class UserEntity implements PasswordHolder {
     @ManyToOne(fetch = LAZY)
     @JoinColumn
     private UserEntity creator;
+
+    @Nullable
+    @Override
+    public GroupEntity getGroup() {
+        return null;
+    }
 }

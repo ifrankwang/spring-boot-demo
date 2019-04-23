@@ -6,14 +6,13 @@ import com.github.ifrankwang.spring.api.dto.security.user.BaseUserDto;
 import com.github.ifrankwang.spring.api.dto.security.user.UserDto;
 import com.github.ifrankwang.spring.api.facade.UserFacade;
 import com.github.ifrankwang.spring.module.security.annotation.Authorize;
+import com.github.ifrankwang.spring.module.security.annotation.BusinessAuthorize;
+import com.github.ifrankwang.spring.module.security.service.UserService;
 import com.github.ifrankwang.utils.page.Page;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.github.ifrankwang.spring.api.controller.ApiConstants.TAG_USER;
 import static com.github.ifrankwang.spring.api.dto.AppResponse.success;
@@ -44,5 +43,13 @@ public class UserController {
     @Authorize
     public AppResponse<UserDto> createUser(@Validated BaseUserDto request) {
         return success(facade.createUser(request));
+    }
+
+    @ApiOperation("停用或激活用户")
+    @PutMapping("/{id}/suspend-or-active")
+    @BusinessAuthorize(id = "#id", getterClass = UserService.class)
+    public AppResponse suspendOrActiveUser(@PathVariable Long id) {
+        facade.suspendOrActiveUser(id);
+        return success();
     }
 }
