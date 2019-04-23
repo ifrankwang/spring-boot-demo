@@ -6,6 +6,7 @@ import com.github.ifrankwang.spring.module.security.entity.*;
 import com.github.ifrankwang.spring.module.security.enums.ApiMethod;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.service.*;
+import com.github.ifrankwang.spring.module.system.service.SystemConfigService;
 import com.github.ifrankwang.spring.util.ApplicationContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,15 +35,19 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
     private final UserService userService;
     private final RoleService roleService;
     private final RoleAuthorityService roleAuthorityService;
+    private final SystemConfigService systemConfigService;
+
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
-    public AccessControlFacadeImpl(ApiService apiService, UserService userService, RoleService roleService, RoleAuthorityService roleAuthorityService) {
+    public AccessControlFacadeImpl(ApiService apiService, UserService userService, RoleService roleService, RoleAuthorityService roleAuthorityService, SystemConfigService systemConfigService) {
         this.apiService = apiService;
         this.userService = userService;
         this.roleService = roleService;
         this.roleAuthorityService = roleAuthorityService;
+        this.systemConfigService = systemConfigService;
     }
 
     @Override
@@ -93,6 +98,10 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
     }
 
     private boolean genericAccessControl(@Nullable Business business, ApiEntity api, UserEntity user) {
+        if (systemConfigService.getSuperAdmin().equals(user)) {
+            return true;
+        }
+
         final List<RoleAuthorityEntity> roleAuthorities = getGenericRoleAuthorities(api, user);
 
         if (null != business) {
