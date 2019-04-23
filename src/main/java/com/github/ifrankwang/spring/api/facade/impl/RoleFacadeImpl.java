@@ -64,4 +64,11 @@ public class RoleFacadeImpl implements RoleFacade {
         final RoleEntity entity = roleService.findById(roleId);
         roleService.delete(entity);
     }
+
+    @Override
+    public RoleDto updateRole(Long roleId, BaseRoleDto baseRoleDto) throws RoleNotFoundException {
+        RoleEntity entity = roleService.findById(roleId);
+        entity = RoleConverter.INSTANCE.update(entity, baseRoleDto);
+        return RoleConverter.INSTANCE.toDto(entity);
+    }
 }

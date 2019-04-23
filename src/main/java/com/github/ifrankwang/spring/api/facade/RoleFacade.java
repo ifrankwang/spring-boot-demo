@@ -60,6 +60,17 @@ public interface RoleFacade {
      * 删除角色
      *
      * @param roleId 角色id
+     * @throws RoleNotFoundException 没找到角色
      */
     void deleteRole(Long roleId) throws RoleNotFoundException;
+
+    /**
+     * 更新角色信息
+     *
+     * @param roleId      角色ID
+     * @param baseRoleDto 更新信息
+     * @return 更新后的对象
+     * @throws RoleNotFoundException 没找到角色
+     */
+    RoleDto updateRole(Long roleId, BaseRoleDto baseRoleDto) throws RoleNotFoundException;
 }

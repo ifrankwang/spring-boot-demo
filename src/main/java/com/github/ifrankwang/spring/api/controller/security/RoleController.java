@@ -73,4 +73,11 @@ public class RoleController {
         facade.deleteRole(id);
         return success();
     }
+
+    @ApiOperation("更新角色基本信息")
+    @PutMapping("/{id}")
+    @BusinessAuthorize(id = "#id", getterClass = RoleService.class)
+    public AppResponse<RoleDto> updateRole(@PathVariable Long id, @Validated @RequestBody BaseRoleDto request) {
+        return success(facade.updateRole(id, request));
+    }
 }
