@@ -1,7 +1,8 @@
 package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
-import com.github.ifrankwang.spring.api.dto.security.LoginInfo;
+import com.github.ifrankwang.spring.api.dto.security.login.LoginInfo;
+import com.github.ifrankwang.spring.api.dto.security.login.LoginResponse;
 import com.github.ifrankwang.spring.api.facade.LoginFacade;
 import com.github.ifrankwang.spring.module.security.exception.InsufficientPermissionException;
 import com.github.ifrankwang.spring.module.security.exception.InvalidUsernameOrPasswordException;
@@ -33,7 +34,7 @@ public class LoginController {
 
     @ApiOperation("用户名密码登录")
     @PostMapping(SecurityConst.LOGIN_URL)
-    public AppResponse<String> login(@Validated @RequestBody LoginInfo loginInfo) {
+    public AppResponse<LoginResponse> login(@Validated @RequestBody LoginInfo loginInfo) {
         return success(loginFacade.login(loginInfo));
     }
 
