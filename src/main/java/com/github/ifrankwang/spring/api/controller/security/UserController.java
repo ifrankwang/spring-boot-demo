@@ -54,9 +54,17 @@ public class UserController {
     }
 
     @ApiOperation("更新用户信息")
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     @BusinessAuthorize(id = "#id", getterClass = UserService.class)
     public AppResponse<UserDto> updateUser(@PathVariable Long id, @Validated @RequestBody BaseUserDto request) {
         return success(facade.updateUser(id, request));
+    }
+
+    @ApiOperation("删除（停用）用户")
+    @DeleteMapping("/{id}")
+    @BusinessAuthorize(id = "#id", getterClass = UserService.class)
+    public AppResponse deleteUser(@PathVariable Long id) {
+        facade.deleteUser(id);
+        return success();
     }
 }

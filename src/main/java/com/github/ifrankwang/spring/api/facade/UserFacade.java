@@ -44,4 +44,12 @@ public interface UserFacade {
      * @throws UserNotFoundException 没有找到用户
      */
     UserDto updateUser(Long userId, BaseUserDto baseUserDto) throws UserNotFoundException;
+
+    /**
+     * 删除用户（只是把用户停用）
+     *
+     * @param userId 用户id
+     * @throws UserNotFoundException 没找到用户
+     */
+    void deleteUser(Long userId) throws UserNotFoundException;
 }
