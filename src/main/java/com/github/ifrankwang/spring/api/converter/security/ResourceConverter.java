@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Frank Wang
  */
-@Mapper(uses = {ResourceIdConverter.class, ListStringConverter.class, AuthorityConverter.class})
+@Mapper(uses = {ResourceIdConverter.class, AuthorityIdConverter.class, ListStringConverter.class, AuthorityConverter.class})
 public interface ResourceConverter {
     ResourceConverter INSTANCE = Mappers.getMapper(ResourceConverter.class);
 

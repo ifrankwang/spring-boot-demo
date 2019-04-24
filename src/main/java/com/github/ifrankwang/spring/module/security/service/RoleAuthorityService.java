@@ -18,4 +18,12 @@ public interface RoleAuthorityService {
      * @return 角色权限列表
      */
     List<RoleAuthorityEntity> findByRolesAndAuthority(List<RoleEntity> roles, AuthorityEntity authority);
+
+    /**
+     * 获取角色的权限列表
+     *
+     * @param roles 角色实体对象列表
+     * @return 角色的权限列表
+     */
+    List<AuthorityEntity> findByRoles(List<RoleEntity> roles);
 }

@@ -36,7 +36,6 @@ public class ResourceController {
 
     @ApiOperation(value = "获取全部模块列表")
     @GetMapping("/list")
-    @Authorize
     public AppResponse<List<ResourceDto>> getResourceList() {
         return success(facade.getResourceList());
     }

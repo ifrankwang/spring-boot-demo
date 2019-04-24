@@ -15,4 +15,11 @@ public class AuthorityIdConverter {
         entity.setId(id);
         return entity;
     }
+
+    Long toId(AuthorityEntity entity) {
+        if (null == entity || null == entity.getId() || 0 == entity.getId()) {
+            return null;
+        }
+        return entity.getId();
+    }
 }
