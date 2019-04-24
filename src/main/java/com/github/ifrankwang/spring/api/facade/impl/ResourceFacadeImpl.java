@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.api.facade.impl;
 
 import com.github.ifrankwang.spring.api.converter.security.ResourceConverter;
 import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ConstructedResourceDto;
 import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.api.facade.ResourceFacade;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
@@ -25,23 +26,29 @@ public class ResourceFacadeImpl implements ResourceFacade {
     }
 
     @Override
+    public List<ConstructedResourceDto> getConstructedResourceList() {
+        final List<ResourceEntity> entities = resourceService.getAllAsConstructed();
+        return ResourceConverter.INSTANCE.toConstructedDtoList(entities);
+    }
+
+    @Override
     public List<ResourceDto> getResourceList() {
-        final List<ResourceEntity> entities = resourceService.getAllAsContracted();
+        final List<ResourceEntity> entities = resourceService.findAll();
         return ResourceConverter.INSTANCE.toDtoList(entities);
     }
 
     @Override
-    public ResourceDto createResource(BaseResourceDto request) throws OperationNotFoundException, ResourceExistedException {
+    public ConstructedResourceDto createResource(BaseResourceDto request) throws OperationNotFoundException, ResourceExistedException {
         ResourceEntity entity = ResourceConverter.INSTANCE.toEntity(request);
         entity = resourceService.create(entity);
-        return ResourceConverter.INSTANCE.toDto(entity);
+        return ResourceConverter.INSTANCE.toConstructedDto(entity);
     }
 
     @Override
-    public ResourceDto updateResource(Long id, BaseResourceDto request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException {
+    public ConstructedResourceDto updateResource(Long id, BaseResourceDto request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException {
         ResourceEntity entity = ResourceConverter.INSTANCE.toEntity(request, id);
         resourceService.update(entity);
-        return ResourceConverter.INSTANCE.toDto(entity);
+        return ResourceConverter.INSTANCE.toConstructedDto(entity);
     }
 
     @Override

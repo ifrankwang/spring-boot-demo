@@ -23,11 +23,18 @@ public interface ResourceService extends BusinessGetter {
     ResourceEntity findById(Long id) throws ResourceNotFoundException;
 
     /**
+     * 获取模块列表
+     *
+     * @return 模块列表
+     */
+    List<ResourceEntity> findAll();
+
+    /**
      * 获取结构化的模块列表
      *
      * @return 结构化的模块列表
      */
-    List<ResourceEntity> getAllAsContracted();
+    List<ResourceEntity> getAllAsConstructed();
 
     /**
      * 新建模块，不允许标签重名

@@ -10,10 +10,12 @@ import java.util.List;
  * @author Frank Wang
  */
 @Data
-public class ResourceDto {
+public class ConstructedResourceDto {
     private Long id;
     private String name;
     private String tag;
+    private Long parentId;
     private Boolean protect;
     private List<AuthorityDto> operations = new ArrayList<>();
+    private List<ConstructedResourceDto> children = new ArrayList<>();
 }

@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.api.converter.security;
 
 import com.github.ifrankwang.spring.api.converter.ListStringConverter;
 import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ConstructedResourceDto;
 import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.module.security.entity.ResourceEntity;
 import org.mapstruct.Mapper;
@@ -36,7 +37,11 @@ public interface ResourceConverter {
     ResourceEntity updateEntity(@MappingTarget ResourceEntity dest, ResourceEntity source);
 
     @Mapping(target = "parentId", source = "parent.id")
-    ResourceDto toDto(ResourceEntity resource);
+    ConstructedResourceDto toConstructedDto(ResourceEntity resource);
+
+    ResourceDto toDto(ResourceEntity entity);
+
+    List<ConstructedResourceDto> toConstructedDtoList(List<ResourceEntity> resources);
 
     List<ResourceDto> toDtoList(List<ResourceEntity> resources);
 }

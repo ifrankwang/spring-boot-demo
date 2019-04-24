@@ -1,6 +1,7 @@
 package com.github.ifrankwang.spring.api.facade;
 
 import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ConstructedResourceDto;
 import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.module.security.exception.OperationNotFoundException;
 import com.github.ifrankwang.spring.module.security.exception.ResourceExistedException;
@@ -18,6 +19,13 @@ public interface ResourceFacade {
      *
      * @return 结构化的模块列表
      */
+    List<ConstructedResourceDto> getConstructedResourceList();
+
+    /**
+     * 获取模块列表
+     *
+     * @return 模块列表
+     */
     List<ResourceDto> getResourceList();
 
     /**
@@ -28,7 +36,7 @@ public interface ResourceFacade {
      * @throws OperationNotFoundException 模块不存在
      * @throws ResourceExistedException 同标签名模块已存在
      */
-    ResourceDto createResource(BaseResourceDto request) throws OperationNotFoundException, ResourceExistedException;
+    ConstructedResourceDto createResource(BaseResourceDto request) throws OperationNotFoundException, ResourceExistedException;
 
     /**
      * 更新模块信息
@@ -40,7 +48,7 @@ public interface ResourceFacade {
      * @throws OperationNotFoundException 操作不存在
      * @throws ResourceExistedException   同标签名模块已存在
      */
-    ResourceDto updateResource(Long id, BaseResourceDto request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException;
+    ConstructedResourceDto updateResource(Long id, BaseResourceDto request) throws ResourceNotFoundException, OperationNotFoundException, ResourceExistedException;
 
     /**
      * 删除模块

@@ -33,7 +33,12 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<ResourceEntity> getAllAsContracted() {
+    public List<ResourceEntity> findAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public List<ResourceEntity> getAllAsConstructed() {
         return repo.findAllByParentIsNull();
     }
 

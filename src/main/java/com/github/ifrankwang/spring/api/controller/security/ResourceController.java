@@ -2,6 +2,7 @@ package com.github.ifrankwang.spring.api.controller.security;
 
 import com.github.ifrankwang.spring.api.dto.AppResponse;
 import com.github.ifrankwang.spring.api.dto.security.resource.BaseResourceDto;
+import com.github.ifrankwang.spring.api.dto.security.resource.ConstructedResourceDto;
 import com.github.ifrankwang.spring.api.dto.security.resource.ResourceDto;
 import com.github.ifrankwang.spring.api.facade.ResourceFacade;
 import com.github.ifrankwang.spring.module.security.annotation.Authorize;
@@ -34,8 +35,14 @@ public class ResourceController {
         this.facade = facade;
     }
 
-    @ApiOperation(value = "获取结构化的模块列表")
+    @ApiOperation("获取结构化的模块列表")
     @GetMapping("/constructed-list")
+    public AppResponse<List<ConstructedResourceDto>> getConstructedResourceList() {
+        return success(facade.getConstructedResourceList());
+    }
+
+    @ApiOperation("获取平列的模块列表")
+    @GetMapping("/list")
     public AppResponse<List<ResourceDto>> getResourceList() {
         return success(facade.getResourceList());
     }
@@ -43,14 +50,14 @@ public class ResourceController {
     @ApiOperation(value = "创建一个新的资源/模块")
     @PostMapping
     @Authorize
-    public AppResponse<ResourceDto> createResource(@Validated @RequestBody BaseResourceDto resourceRequest) {
+    public AppResponse<ConstructedResourceDto> createResource(@Validated @RequestBody BaseResourceDto resourceRequest) {
         return success(facade.createResource(resourceRequest));
     }
 
     @ApiOperation(value = "更新模块信息")
     @PutMapping("/{id}")
     @BusinessAuthorize(id = "#id", getterClass = ResourceService.class)
-    public AppResponse<ResourceDto> updateResource(@PathVariable Long id, @Validated @RequestBody BaseResourceDto resourceRequest) {
+    public AppResponse<ConstructedResourceDto> updateResource(@PathVariable Long id, @Validated @RequestBody BaseResourceDto resourceRequest) {
         return success(facade.updateResource(id, resourceRequest));
     }
 
