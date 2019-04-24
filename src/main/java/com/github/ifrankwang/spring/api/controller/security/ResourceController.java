@@ -34,8 +34,8 @@ public class ResourceController {
         this.facade = facade;
     }
 
-    @ApiOperation(value = "获取全部模块列表")
-    @GetMapping("/list")
+    @ApiOperation(value = "获取结构化的模块列表")
+    @GetMapping("/constructed-list")
     public AppResponse<List<ResourceDto>> getResourceList() {
         return success(facade.getResourceList());
     }
