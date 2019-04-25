@@ -37,6 +37,7 @@ public class ResourceController {
 
     @ApiOperation("获取结构化的模块列表")
     @GetMapping("/constructed-list")
+    @Authorize
     public AppResponse<List<ConstructedResourceDto>> getConstructedResourceList() {
         return success(facade.getConstructedResourceList());
     }
