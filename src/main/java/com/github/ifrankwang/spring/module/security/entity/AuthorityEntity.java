@@ -1,13 +1,11 @@
 package com.github.ifrankwang.spring.module.security.entity;
 
-import com.github.ifrankwang.spring.module.security.enums.Operations;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import javax.persistence.*;
 
-import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -22,8 +20,8 @@ public class AuthorityEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    @Enumerated(STRING)
-    private Operations operation;
+    private String name;
+    private String tag;
 
     @ManyToOne(fetch = LAZY)
     private ResourceEntity resource;

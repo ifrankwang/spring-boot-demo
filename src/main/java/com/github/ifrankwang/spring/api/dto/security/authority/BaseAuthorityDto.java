@@ -1,6 +1,5 @@
 package com.github.ifrankwang.spring.api.dto.security.authority;
 
-import com.github.ifrankwang.spring.module.security.enums.Operations;
 import lombok.Data;
 
 /**
@@ -8,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class BaseAuthorityDto {
-    private Operations operation;
+    private String name;
+    private String tag;
     private Long apiId;
 }

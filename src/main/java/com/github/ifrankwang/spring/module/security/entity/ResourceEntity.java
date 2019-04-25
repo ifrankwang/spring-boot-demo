@@ -34,6 +34,7 @@ public class ResourceEntity implements Business, BidirectionalRelation {
     private LocalDateTime createTime = now();
     @Column(name = "protected")
     private Boolean protect;
+    private Boolean systemWide;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn

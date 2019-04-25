@@ -15,5 +15,6 @@ public class BaseResourceDto {
     private String tag;
     private Long parentId;
     private Boolean protect;
+    private Boolean systemWide;
     private List<BaseAuthorityDto> operations = new ArrayList<>();
 }
