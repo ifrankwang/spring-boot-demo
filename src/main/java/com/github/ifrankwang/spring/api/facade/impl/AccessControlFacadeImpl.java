@@ -78,17 +78,25 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
     }
 
     private boolean accessControl(Authentication authentication, HttpServletRequest request, @Nullable Long businessId, @Nullable Class<? extends BusinessGetter> getterClass) throws ServiceException {
+        // 超管绕过所有权限设置
+        final UserEntity user = userService.findByEmail((String) authentication.getPrincipal());
+        if (systemConfigService.getSuperAdmin().equals(user)) {
+            return true;
+        }
+
+        // 根据请求方法及路径获取系统记录的api(所需权限等)信息
         final String idPlaceHolder = "{id}";
         final String uriPath = request.getRequestURI().replace(contextPath, "");
         final String requestPath = Optional.ofNullable(businessId)
                                            .map(id -> uriPath.replace(id.toString(), idPlaceHolder))
                                            .orElse(uriPath);
         final ApiEntity api = apiService.findByMethodAndPath(ApiMethod.valueOf(request.getMethod()), requestPath);
-        final UserEntity user = userService.findByEmail((String) authentication.getPrincipal());
 
         if (null == businessId || null == getterClass) {
+            // 判断普通权限
             return genericAccessControl(api, user);
         } else {
+            // 判断业务权限
             final BusinessGetter getter = ApplicationContextHelper.getBean(getterClass);
             final Business business = getter.findById(businessId);
             return businessAccessControl(business, api, user);
@@ -100,10 +108,6 @@ public class AccessControlFacadeImpl implements AccessControlFacade {
     }
 
     private boolean genericAccessControl(@Nullable Business business, ApiEntity api, UserEntity user) {
-        if (systemConfigService.getSuperAdmin().equals(user)) {
-            return true;
-        }
-
         final List<RoleAuthorityEntity> roleAuthorities = getGenericRoleAuthorities(api, user);
 
         if (null != business) {
