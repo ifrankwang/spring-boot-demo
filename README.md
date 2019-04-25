@@ -32,44 +32,6 @@ TODO 之后做补充
 
 ## 项目规范
 
-### HTTP 请求设计
-
-1. `GET` 请求用于获取资源
-2. `PUT` 请求用于完全修改资源
-3. `PATCH` 请求用于部分修改资源
-4. `POST` 请求用于新增资源
-5. `DELETE` 请求用于删除资源
-6. 请求 URL 中不应包含 `get`, `create`, `delete`, `update` 等操作词
-7. 请求 URL 中出现多个单词应用 `kebab-case(横杠式命名风格)`，如：`recharge-record`
-
-### Controller
-
-1. 在`com.github.ifrankwang.spring.api.controller`包中创建`Controller`类
-2. 所有接口类的`Endpoint`需以`API_PREFIX`起头
-3. 不需要权限访问的接口，可以加上`NO_AUTH_URL`
-4. 所有需要显示在Swagger中的接口类需要标注`@Api(tags = [描述])`
-5. 所有接口方法需要标注`@ApiOperation(value = "[操作]", notes = "[描述]")`
-6. 需要控制访问用户身份的接口，TODO 之后加上说明
-7. 所有除操作成功状态外，有返回数据的，都写明返回类型。如果返回类型不是基本类型（`String`, `Integer`...），需要在类里面给每个属性标注`@ApiModelProperty("[说明]")`
-8. 业务逻辑放在`facade`里处理；`Service`作为相关信息服务，只提供最基础的业务处理；`Controller`只做调用
-
-### Service
-
-TODO 之后加上说明
-
-### Repository
-
-TODO 之后加上说明
-
-### Entity
-
-1. `Entity`在数据库存储的状态、类型等，在代码中需要用相应的`enum`来体现
-2. `Entity`的`List`, `Set`类型属性都必须初始化
-
-### Git Commit
-
-Git `commit`的时候，按照以下消息规范的范围进行`commit`。最好不要出现一次`commit`同时出现多个范围的修改，如：一次`commit`中新增了接口，同时又修改了配置。
-
 ### Git Commit 消息
 
 1. 用`A 新增`作为前缀表示**新增功能**，如`A 新增 消息接口`
@@ -85,3 +47,9 @@ Git `commit`的时候，按照以下消息规范的范围进行`commit`。最好
 ## 前后端协作建议
 
 建议使用[石墨](https://shimo.im/)协作
+
+## TODO List
+
+- [ ] 用户配置角色接口
+- [ ] 完善文档
+- [ ] 完善数据库初始数据
